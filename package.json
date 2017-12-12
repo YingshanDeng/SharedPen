@@ -1,0 +1,30 @@
+{
+  "name": "sharedpen",
+  "version": "0.0.1",
+  "description": "A real time collaborative editor using CodeMirror and ot.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YingshanDeng/SharedPen.git"
+  },
+  "keywords": [
+    "collaborative",
+    "editor",
+    "CodeMirror",
+    "ot.js"
+  ],
+  "author": "YingshanDeng <yingshandeng@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/YingshanDeng/SharedPen/issues"
+  },
+  "homepage": "https://github.com/YingshanDeng/SharedPen#readme",
+  "dependencies": {
+    "codemirror": "^5.32.0",
+    "express": "^4.16.2",
+    "socket.io": "^2.0.4"
+  }
+}
