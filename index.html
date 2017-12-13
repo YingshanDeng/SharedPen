@@ -22,7 +22,7 @@
 
 	<!-- init client -->
 	<script>
-		var socket = io()
+	var socket = io()
     socket.on('doc', function(data) {
       var cm = CodeMirror.fromTextArea(document.getElementById('note'), {lineNumbers: true})
       cm.setValue(data.str)

@@ -4,7 +4,9 @@
   "description": "A real time collaborative editor using CodeMirror and ot.js",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "standard": "standard lib/*.js",
+    "fix": "standard --fix lib/*.js"
   },
   "repository": {
     "type": "git",
@@ -26,5 +28,8 @@
     "codemirror": "^5.32.0",
     "express": "^4.16.2",
     "socket.io": "^2.0.4"
+  },
+  "devDependencies": {
+    "standard": "^10.0.3"
   }
 }

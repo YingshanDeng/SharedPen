@@ -145,16 +145,26 @@ ot.CodeMirrorAdapter = (function (global) {
       var index = 0; // holds the current index into CodeMirror's content
       for (var i = 0, l = ops.length; i < l; i++) {
         var op = ops[i];
-        if (TextOperation.isRetain(op)) {
+        if (op.isRetain()) {
           index += op;
-        } else if (TextOperation.isInsert(op)) {
+        } else if (op.isInsert()) {
           cm.replaceRange(op, cm.posFromIndex(index));
           index += op.length;
-        } else if (TextOperation.isDelete(op)) {
+        } else if (op.isDelete()) {
           var from = cm.posFromIndex(index);
           var to   = cm.posFromIndex(index - op);
           cm.replaceRange('', from, to);
         }
+        // if (TextOperation.isRetain(op)) {
+        //   index += op;
+        // } else if (TextOperation.isInsert(op)) {
+        //   cm.replaceRange(op, cm.posFromIndex(index));
+        //   index += op.length;
+        // } else if (TextOperation.isDelete(op)) {
+        //   var from = cm.posFromIndex(index);
+        //   var to   = cm.posFromIndex(index - op);
+        //   cm.replaceRange('', from, to);
+        // }
       }
     });
   };
