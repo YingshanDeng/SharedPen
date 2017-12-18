@@ -1,39 +1,44 @@
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>SharedPen Demo</title>
+  <meta charset="UTF-8">
+  <title>SharedPen Demo</title>
 
-	<!-- ot.js -->
-	<!-- <script src="text-operation.js"></script> -->
-	<script src="bundle.js"></script>
-	<script src="selection.js"></script>
-	<script src="wrapped-operation.js"></script>
-	<script src="undo-manager.js"></script>
-	<script src="client.js"></script>
-	<script src="codemirror-adapter.js"></script>
-	<script src="socketio-adapter.js"></script>
-	<script src="editor-client.js"></script>
+  <!-- ot.js -->
+  <script src="text-operation.js"></script>
+  <script src="selection.js"></script>
+  <script src="wrapped-operation.js"></script>
+  <script src="undo-manager.js"></script>
+  <script src="client.js"></script>
+  <script src="codemirror-adapter.js"></script>
+  <script src="socketio-adapter.js"></script>
+  <script src="editor-client.js"></script>
 
-	<!-- CodeMirror -->
-	<link rel="stylesheet" href="codemirror/lib/codemirror.css">
-	<script src="codemirror/lib/codemirror.js"></script>
+  <!-- CodeMirror -->
+  <link rel="stylesheet" href="codemirror/lib/codemirror.css">
+  <script src="codemirror/lib/codemirror.js"></script>
 
-	<!-- socket.io -->
-	<script src="socket.io-client/dist/socket.io.js"></script>
-
-	<!-- init client -->
-	<script>
-	var socket = io()
-    socket.on('doc', function(data) {
-      var cm = CodeMirror.fromTextArea(document.getElementById('note'), {lineNumbers: true})
-      cm.setValue(data.str)
-      var serverAdapter = new ot.SocketIOAdapter(socket)
-      var editorAdapter = new ot.CodeMirrorAdapter(cm)
-      var client = new ot.EditorClient(data.revision, data.clients, serverAdapter, editorAdapter)
-    })
-	</script>
+  <!-- socket.io -->
+  <script src="socket.io-client/dist/socket.io.js"></script>
 </head>
 <body>
-	<textarea id="note"></textarea>
+  <textarea id="note"></textarea>
+  <!-- init client -->
+  <script>
+  // var socket = io()
+  // socket.on('doc', function(data) {
+  //   var cm = CodeMirror.fromTextArea(document.getElementById('note'), {lineNumbers: true})
+  //   cm.setValue(data.str)
+  //   var serverAdapter = new ot.SocketIOAdapter(socket)
+  //   var editorAdapter = new ot.CodeMirrorAdapter(cm)
+  //   var client = new ot.EditorClient(data.revision, data.clients, serverAdapter, editorAdapter)
+  // })
+  </script>
+
+  <script>
+  var cm = CodeMirror.fromTextArea(document.getElementById('note'), {lineNumbers: true})
+  cm.on('changes', (cm, changes) => {
+    console.log(changes)
+  })
+  </script>
 </body>
 </html>

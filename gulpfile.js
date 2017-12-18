@@ -6,15 +6,15 @@ var buffer = require('vinyl-buffer')
 var uglify = require('gulp-uglify')
 
 gulp.task('scripts', () => {
-  return browserify(['lib/TextOperation.js'], {standalone: 'ot.TextOperation'})
-  .transform(babelify, {
-    presets: ['es2015'],
-    plugins: ['add-module-exports']
-  })
-  .bundle()
-  .pipe(source('bundle.js'))
-  // You need this if you want to continue using the stream with other plugins
-  .pipe(buffer())
-  .pipe(uglify())
-  .pipe(gulp.dest('dist/'))
+  return browserify(['lib/SharedPen.js'], {standalone: 'SharedPen'})
+    .transform(babelify, {
+      presets: ['es2015'],
+      plugins: ['add-module-exports']
+    })
+    .bundle()
+    .pipe(source('sharedpen.min.js'))
+    // You need this if you want to continue using the stream with other plugins
+    .pipe(buffer())
+    .pipe(uglify())
+    .pipe(gulp.dest('dist/'))
 })
