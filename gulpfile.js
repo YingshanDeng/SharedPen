@@ -15,7 +15,7 @@ gulp.task('serve', ['clean:build', 'js'], () => {
     port: 9999,
     logPrefix: 'SharedPen',
     server: {
-      baseDir: "./"
+      baseDir: './'
     },
     notify: false
   })
@@ -25,8 +25,8 @@ gulp.task('serve', ['clean:build', 'js'], () => {
 // compile js
 gulp.task('js', () => {
   return gulp.src([
-      'lib/*.js'
-    ])
+    'lib/*.js'
+  ])
     .pipe(cached('jsing'))
     .pipe(babel({
       presets: ['es2015']

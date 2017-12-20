@@ -25,18 +25,40 @@
   <!-- socket.io -->
   <script src="node_modules/socket.io-client/dist/socket.io.js"></script>
 
-  <style>
-    .sharedpen-b {
-      font-weight: bold;
-    }
-  </style>
+  <link rel="stylesheet" href="lib/SharedPen.css">
 </head>
 <body>
   <textarea id="note"></textarea>
+
+  <!-- text -->
+  <button onclick="sharedPen.bold()">Bold</button>
+  <button onclick="sharedPen.italic()">Italic</button>
+  <button onclick="sharedPen.underline()">Underline</button>
+  <button onclick="sharedPen.strike()">Strike</button>
+
+  <!-- color/bgcolor -->
+  <button onclick="sharedPen.highlight()">Highlight</button>
+
+  <!-- align -->
+  <button onclick="sharedPen.align('left')">Align Left</button>
+  <button onclick="sharedPen.align('center')">Align Center</button>
+  <button onclick="sharedPen.align('right')">Align Rigth</button>
+
+  <!-- list -->
+  <button onclick="sharedPen.orderedList()">OrderList</button>
+  <button onclick="sharedPen.unorderedList()">UnorderList</button>
+  <button onclick="sharedPen.todoList()">TodoList</button>
+
+  <!-- indent/unindent -->
+  <button onclick="sharedPen.indent()">Indent</button>
+  <button onclick="sharedPen.unindent()">Unindent</button>
+
   <!-- init client -->
   <script>
-  var cm = CodeMirror.fromTextArea(document.getElementById('note'), {lineNumbers: true})
+  var cm = CodeMirror.fromTextArea(document.getElementById('note'), {lineNumbers: false})
   var sharedPen = new SharedPen(cm)
+
+
   </script>
 </body>
 </html>
