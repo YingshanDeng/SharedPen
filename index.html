@@ -4,7 +4,7 @@
   <title>SharedPen Demo</title>
 
   <!-- ot.js -->
-  <script src="build/Utils.js"></script>
+  <!-- <script src="build/Utils.js"></script>
   <script src="build/Constants.js"></script>
   <script src="build/TextAction.js"></script>
   <script src="build/TextOperation.js"></script>
@@ -17,7 +17,9 @@
   <script src="build/ClientSocketIOAdapter.js"></script>
   <script src="build/Client.js"></script>
   <script src="build/EditorClient.js"></script>
-  <script src="build/SharedPen.js"></script>
+  <script src="build/SharedPen.js"></script> -->
+
+  <script src="dist/SharedPen.min.js"></script>
 
   <!-- CodeMirror -->
   <link rel="stylesheet" href="node_modules/codemirror/lib/codemirror.css">
@@ -54,10 +56,9 @@
   <button onclick="sharedPen.indent()">Indent</button>
   <button onclick="sharedPen.unindent()">Unindent</button>
 
-  <!-- init client -->
+  <!-- init SharedPen -->
   <script>
   var sharedPen = new SharedPen(document.getElementById('note'))
-
   </script>
 </body>
 </html>
