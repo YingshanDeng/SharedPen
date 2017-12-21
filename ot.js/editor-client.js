@@ -91,7 +91,6 @@ ot.EditorClient = (function () {
     this.selection = selection;
     this.mark = this.editorAdapter.setOtherSelection(
       selection,
-      // ???
       selection.position === selection.selectionEnd ? this.color : this.lightColor,
       this.id
     );

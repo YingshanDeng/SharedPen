@@ -14,6 +14,7 @@
   <script src="build/AnnotationList.js"></script>
   <script src="build/RichTextCodeMirror.js"></script>
   <script src="build/RichTextCodeMirrorAdapter.js"></script>
+  <script src="build/ClientSocketIOAdapter.js"></script>
   <script src="build/Client.js"></script>
   <script src="build/EditorClient.js"></script>
   <script src="build/SharedPen.js"></script>
@@ -55,9 +56,7 @@
 
   <!-- init client -->
   <script>
-  var cm = CodeMirror.fromTextArea(document.getElementById('note'), {lineNumbers: true})
-  var sharedPen = new SharedPen(cm)
-
+  var sharedPen = new SharedPen(document.getElementById('note'))
 
   </script>
 </body>
