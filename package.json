@@ -4,9 +4,9 @@
   "description": "A real time collaborative editor using CodeMirror and ot.js",
   "main": "index.js",
   "scripts": {
+    "fix": "standard --fix lib/*.js server.js gulpfile.js",
     "test": "standard lib/*.js server.js gulpfile.js",
-    "build": "gulp scripts",
-    "fix": "standard --fix lib/*.js server.js gulpfile.js"
+    "bundle": "gulp"
   },
   "repository": {
     "type": "git",
@@ -37,10 +37,14 @@
     "browser-sync": "^2.18.13",
     "browserify": "^14.5.0",
     "del": "^3.0.0",
+    "event-stream": "^3.3.4",
     "gulp": "^3.9.1",
     "gulp-babel": "^7.0.0",
     "gulp-cached": "^1.1.1",
+    "gulp-clean-css": "^3.9.0",
+    "gulp-rename": "^1.2.2",
     "gulp-uglify": "^3.0.0",
+    "run-sequence": "^2.2.0",
     "standard": "^10.0.3",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"

@@ -9,7 +9,6 @@ app.get('/', function (req, res) {
 })
 
 app.use(express.static('build'))
-app.use(express.static('lib'))
 app.use(express.static('node_modules'))
 
 http.listen(3000, function () {
