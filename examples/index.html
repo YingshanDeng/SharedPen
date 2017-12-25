@@ -32,33 +32,36 @@
 </head>
 <body>
   <textarea id="note"></textarea>
-
+  <hr>
   <!-- text -->
   <button onclick="sharedPen.bold()">Bold</button>
   <button onclick="sharedPen.italic()">Italic</button>
   <button onclick="sharedPen.underline()">Underline</button>
   <button onclick="sharedPen.strike()">Strike</button>
-
+  <hr>
   <!-- color/bgcolor -->
   <button onclick="sharedPen.highlight()">Highlight</button>
+  <hr>
+
+  <!-- font -->
 
   <!-- align -->
   <button onclick="sharedPen.align('left')">Align Left</button>
   <button onclick="sharedPen.align('center')">Align Center</button>
   <button onclick="sharedPen.align('right')">Align Rigth</button>
-
+  <hr>
   <!-- list -->
   <button onclick="sharedPen.orderedList()">OrderList</button>
   <button onclick="sharedPen.unorderedList()">UnorderList</button>
   <button onclick="sharedPen.todoList()">TodoList</button>
-
+  <hr>
   <!-- indent/unindent -->
   <button onclick="sharedPen.indent()">Indent</button>
   <button onclick="sharedPen.unindent()">Unindent</button>
-
+  <hr>
   <button onclick="sharedPen.undo()">Undo</button>
   <button onclick="sharedPen.redo()">Redo</button>
-
+  <hr>
   <!-- init SharedPen -->
   <script>
   var sharedPen = new SharedPen(document.getElementById('note'))
