@@ -22,10 +22,10 @@
 .rtcm-la-right {
   text-align: right
 }
-pre.rtcm-lt-o,
-pre.rtcm-lt-u,
-pre.rtcm-lt-t,
-pre.rtcm-lt-tc {
+.CodeMirror pre.rtcm-lt-o,
+.CodeMirror pre.rtcm-lt-u,
+.CodeMirror pre.rtcm-lt-t,
+.CodeMirror pre.rtcm-lt-tc {
   padding-left: 40px;
 }
 

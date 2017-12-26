@@ -11,6 +11,7 @@
   <script src="Selection.js"></script>
   <script src="WrappedOperation.js"></script>
   <script src="UndoManager.js"></script>
+  <script src="EntityManager.js"></script>
   <script src="AnnotationList.js"></script>
   <script src="RichTextCodeMirror.js"></script>
   <script src="RichTextCodeMirrorAdapter.js"></script>
@@ -62,7 +63,7 @@
   <hr>
   <!-- init SharedPen -->
   <script>
-  var sharedPen = new SharedPen(document.getElementById('note'))
+  var sharedPen = new SharedPen(document.getElementById('note'), 'http://localhost:3000')
   </script>
 </body>
 </html>
