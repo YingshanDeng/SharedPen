@@ -1,0 +1,40 @@
+
+<dom-module id="sharedpen-editor">
+  <template>
+    <style>
+      :host {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+                justify-content: center;
+        width: 100%;
+        height: calc(100% - 97px);
+        background: #eee;
+        overflow: scroll;
+      }
+      .container {
+        width: 804px;
+        min-width: 804px;
+        height: 1219px;
+        box-shadow: 0 0 0 0.75pt #d1d1d1, 0 0 3pt 0.75pt #ccc;
+        margin: 6pt;
+        padding: 96px;
+        background: #fff;
+        outline: none;
+      }
+    </style>
+    <div class="container" contenteditable="true"></div>
+  </template>
+  <script>
+    class SharedPenEditor extends Polymer.Element {
+      static get is () {
+        return 'sharedpen-editor'
+      }
+
+
+    }
+    window.customElements.define(SharedPenEditor.is, SharedPenEditor)
+  </script>
+</dom-module>

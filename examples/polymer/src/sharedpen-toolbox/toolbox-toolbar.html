@@ -1,0 +1,23 @@
+
+<dom-module id="toolbox-toolbar">
+  <template>
+    <style>
+      :host {
+        display: block;
+        width: 100%;
+        height: 35px;
+        border-top: 1px solid #e0e0e0;
+        border-bottom: 1px solid #e0e0e0;
+      }
+    </style>
+
+  </template>
+  <script>
+    class ToolboxToolbar extends Polymer.Element {
+      static get is () {
+        return 'toolbox-toolbar'
+      }
+    }
+    window.customElements.define(ToolboxToolbar.is, ToolboxToolbar)
+  </script>
+</dom-module>
