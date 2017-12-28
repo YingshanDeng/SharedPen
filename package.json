@@ -36,6 +36,7 @@
     "babelify": "^8.0.0",
     "browser-sync": "^2.18.13",
     "browserify": "^14.5.0",
+    "cors": "^2.8.4",
     "del": "^3.0.0",
     "event-stream": "^3.3.4",
     "gulp": "^3.9.1",

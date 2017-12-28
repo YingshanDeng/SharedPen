@@ -1,6 +1,11 @@
+<link rel="import" href="../styles/codemirror-style.html">
+<link rel="import" href="../styles/sharedpen-style.html">
 
 <dom-module id="sharedpen-editor">
   <template>
+    <style include="codemirror-style"></style>
+    <style include="sharedpen-style"></style>
+
     <style>
       :host {
         display: -webkit-box;
@@ -14,26 +19,53 @@
         background: #eee;
         overflow: scroll;
       }
-      .container {
-        width: 804px;
-        min-width: 804px;
-        height: 1219px;
+      .codemirror-container {
+        position: relative;
+        width: 613px;
+        min-width: 613px;
+        height: 1027px;
         box-shadow: 0 0 0 0.75pt #d1d1d1, 0 0 3pt 0.75pt #ccc;
+        background: #fff;
         margin: 6pt;
         padding: 96px;
-        background: #fff;
-        outline: none;
       }
+      .CodeMirror {
+        width: 613px;
+        height: 1027px;
+      }
+
     </style>
-    <div class="container" contenteditable="true"></div>
+    <div class="codemirror-container">
+      <textarea id="note"></textarea>
+    </div>
   </template>
   <script>
     class SharedPenEditor extends Polymer.Element {
       static get is () {
         return 'sharedpen-editor'
       }
+      ready () {
+        super.ready()
+        // int CodeMirror
+        this.cm = window.CodeMirror.fromTextArea(
+          this.$.note,
+          {
+            lineNumbers: false,
+            lineWrapping: true
+          }
+        )
+        this.shadowRoot.querySelector('.codemirror-container').addEventListener('click', () => {
+          this.cm.focus()
+        })
 
-
+        // init SharedPen
+        this.sharedPen = new SharedPen(this.cm, 'http://localhost:3000', this.shadowRoot)
+      }
+      connectedCallback () {
+        super.connectedCallback()
+        // this.cm.refresh()
+        // this.focus()
+      }
     }
     window.customElements.define(SharedPenEditor.is, SharedPenEditor)
   </script>

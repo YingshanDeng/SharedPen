@@ -18,9 +18,15 @@
   <script>
     class SharedPenApp extends Polymer.Element {
       static get is() { return 'sharedpen-app'; }
-      static get properties() {
-        // return {
-        // };
+      // static get properties() {
+      //   return {
+      //   }
+      // }
+      ready () {
+        super.ready()
+      }
+      connectedCallback () {
+        super.connectedCallback()
       }
     }
 
