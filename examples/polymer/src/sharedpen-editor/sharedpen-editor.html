@@ -51,7 +51,8 @@
           this.$.note,
           {
             lineNumbers: false,
-            lineWrapping: true
+            lineWrapping: true,
+            cursorHeight: 0.88
           }
         )
         this.shadowRoot.querySelector('.codemirror-container').addEventListener('click', () => {
@@ -61,6 +62,7 @@
         window.SharedPenRoot = this.shadowRoot
         // init SharedPen
         this.sharedPen = new SharedPen(this.cm, 'http://localhost:3000', this.shadowRoot)
+        window.sharedpen = this.sharedPen
       }
       connectedCallback () {
         super.connectedCallback()
