@@ -57,7 +57,8 @@
         this.shadowRoot.querySelector('.codemirror-container').addEventListener('click', () => {
           this.cm.focus()
         })
-
+        // HACK: ShredPen dynamic style add place
+        window.SharedPenRoot = this.shadowRoot
         // init SharedPen
         this.sharedPen = new SharedPen(this.cm, 'http://localhost:3000', this.shadowRoot)
       }
