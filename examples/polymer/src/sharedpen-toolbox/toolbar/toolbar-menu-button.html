@@ -1,0 +1,18 @@
+<dom-module id="toolbar-menu-button">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+  </template>
+  <script>
+    class ToolbarMenuButton extends Polymer.Element {
+      static get is () {
+        return 'toolbar-menu-button'
+      }
+    }
+    window.customElements.define(ToolbarMenuButton.is, ToolbarMenuButton)
+  </script>
+</dom-module>

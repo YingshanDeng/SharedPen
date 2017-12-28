@@ -1,0 +1,65 @@
+<dom-module id="toolbar-normal-button">
+  <template>
+    <style>
+      :host {
+        display: block;
+        margin: 0 3px;
+      }
+      /* button */
+      button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        border: none;
+        outline: none;
+        width: 28px;
+        height: 28px;
+        padding: 0;
+        border-radius: 2px;
+        background-color: #fff;
+        cursor: pointer;
+        transition: background-color 200ms linear;
+      }
+      button:hover {
+        background-color: #f0f0f0;
+      }
+      button:active {
+        background-color: #e0e0e0;
+      }
+
+      /* button icon */
+      button .icon {
+        opacity: 0.6;
+        transition: opacity 200ms linear;
+      }
+      button:hover .icon {
+        opacity: 1;
+      }
+    </style>
+    <button on-tap="_onTap">
+      <div class="icon" style$="content: url(src/images/[[name]].svg)"></div>
+    </button>
+  </template>
+  <script>
+    class ToolbarNormalButton extends Polymer.GestureEventListeners(Polymer.Element) {
+      static get is () {
+        return 'toolbar-normal-button'
+      }
+      static get properties () {
+        return {
+          name: String,
+          tooltip: String
+        }
+      }
+      _onTap (evt) {
+        this.dispatchEvent(new CustomEvent('toolbar-tap', {
+          detail: {name: this.name},
+          bubbles: true,
+          composed: true
+        }))
+      }
+    }
+    window.customElements.define(ToolbarNormalButton.is, ToolbarNormalButton)
+  </script>
+</dom-module>

@@ -1,3 +1,5 @@
+<link rel="import" href="toolbar/toolbar-normal-button.html">
+<link rel="import" href="toolbar/toolbar-menu-button.html">
 
 <dom-module id="toolbox-toolbar">
   <template>
@@ -8,14 +10,136 @@
         height: 35px;
         border-top: 1px solid #e0e0e0;
         border-bottom: 1px solid #e0e0e0;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .toolbar-separator {
+        border-left: 1px solid #e0e0e0;
+        margin: 0 3px;
+        width: 0;
+        height: 35px;
+        user-select: none;
       }
     </style>
+    <!-- undo/redo -->
+    <template is="dom-repeat" items="[[undoItems]]">
+      <toolbar-normal-button name="[[item.name]]" tooltip="[[item.tooltip]]"></toolbar-normal-button>
+    </template>
+    <div class="toolbar-separator"></div>
+    <!-- font/font-size -->
+
+
+    <!-- bold/italic/underline/strike -->
+    <template is="dom-repeat" items="[[formatItems]]">
+      <toolbar-normal-button name="[[item.name]]" tooltip="[[item.tooltip]]"></toolbar-normal-button>
+    </template>
+    <div class="toolbar-separator"></div>
+    <!-- color/highlight color -->
+
+
+
+    <!-- align(left, center, right, justify) -->
+    <template is="dom-repeat" items="[[alignItems]]">
+      <toolbar-normal-button name="[[item.name]]" tooltip="[[item.tooltip]]"></toolbar-normal-button>
+    </template>
+    <div class="toolbar-separator"></div>
+    <!-- list(order, unorder, todo) -->
+    <template is="dom-repeat" items="[[listItems]]">
+      <toolbar-normal-button name="[[item.name]]" tooltip="[[item.tooltip]]"></toolbar-normal-button>
+    </template>
+    <div class="toolbar-separator"></div>
+    <!-- indent/unindent -->
+    <template is="dom-repeat" items="[[indentItems]]">
+      <toolbar-normal-button name="[[item.name]]" tooltip="[[item.tooltip]]"></toolbar-normal-button>
+    </template>
+    <div class="toolbar-separator"></div>
 
   </template>
   <script>
     class ToolboxToolbar extends Polymer.Element {
       static get is () {
         return 'toolbox-toolbar'
+      }
+      static get properties () {
+        return {
+          undoItems: {
+            type: Array,
+            value: [{
+              name: 'undo',
+              tooltip: 'Undo (⌘Z)'
+            }, {
+              name: 'redo',
+              tooltip: 'Rndo (⌘Y)'
+            }]
+          },
+          formatItems: {
+            type: Array,
+            value: [{
+              name: 'bold',
+              tooltip: ''
+            }, {
+              name: 'italic',
+              tooltip: ''
+            }, {
+              name: 'underline',
+              tooltip: ''
+            }, {
+              name: 'strike',
+              tooltip: ''
+            }]
+          },
+          alignItems: {
+            type: Array,
+            value: [{
+              name: 'align-left',
+              tooltip: 'Left align (⌘+Shift+L)'
+            }, {
+              name: 'align-center',
+              tooltip: 'Center align (⌘+Shift+E)'
+            }, {
+              name: 'align-right',
+              tooltip: 'Right align (⌘+Shift+R)'
+            }, {
+              name: 'align-justify',
+              tooltip: 'Justify (⌘+Shift+J)'
+            }]
+          },
+          listItems: {
+            type: Array,
+            value: [{
+              name: 'ordered-list',
+              tooltip: ''
+            }, {
+              name: 'unordered-list',
+              tooltip: ''
+            }, {
+              name: 'todo-list',
+              tooltip: ''
+            }]
+          },
+          indentItems: {
+            type: Array,
+            value: [{
+              name: 'indent',
+              tooltip: 'Indent (⌘[)'
+            }, {
+              name: 'unindent',
+              tooltip: 'Unindent (⌘[)'
+            }]
+          }
+        }
+      }
+      connectedCallback () {
+        super.connectedCallback()
+        window.addEventListener('toolbar-tap', (evt) => {
+          console.log('---', evt.detail)
+        })
+      }
+      disconnectedCallback() {
+        super.disconnectedCallback()
+
       }
     }
     window.customElements.define(ToolboxToolbar.is, ToolboxToolbar)
