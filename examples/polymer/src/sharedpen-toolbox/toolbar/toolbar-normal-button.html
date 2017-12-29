@@ -38,7 +38,7 @@
       }
     </style>
     <button on-tap="_onTap">
-      <div class="icon" style$="content: url(src/images/[[name]].svg)"></div>
+      <div class="icon" style$="content: url(src/images/[[type]].svg)"></div>
     </button>
   </template>
   <script>
@@ -48,13 +48,13 @@
       }
       static get properties () {
         return {
-          name: String,
+          type: String,
           tooltip: String
         }
       }
       _onTap (evt) {
-        this.dispatchEvent(new CustomEvent('toolbar-tap', {
-          detail: {name: this.name},
+        this.dispatchEvent(new CustomEvent('toolbar-button-tap', {
+          detail: { type: this.type },
           bubbles: true,
           composed: true
         }))

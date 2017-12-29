@@ -1,5 +1,6 @@
 <link rel="import" href="toolbar/toolbar-normal-button.html">
 <link rel="import" href="toolbar/toolbar-menu-button.html">
+<link rel="import" href="toolbar/toolbar-dropdown-list.html">
 
 <dom-module id="toolbox-toolbar">
   <template>
@@ -22,40 +23,55 @@
         height: 35px;
         user-select: none;
       }
+      toolbar-menu-button#font {
+        --caption-with: 70px;
+      }
+      toolbar-menu-button#font-size {
+        --caption-with: 45px;
+      }
     </style>
     <!-- undo/redo -->
     <template is="dom-repeat" items="[[undoItems]]">
-      <toolbar-normal-button name="[[item.name]]" tooltip="[[item.tooltip]]"></toolbar-normal-button>
+      <toolbar-normal-button type="[[item.type]]" tooltip="[[item.tooltip]]"></toolbar-normal-button>
     </template>
     <div class="toolbar-separator"></div>
     <!-- font/font-size -->
-
-
+    <template is="dom-repeat" items="[[fontItems]]">
+      <toolbar-menu-button
+        id$="[[item.type]]"
+        type="[[item.type]]"
+        tooltip="[[item.tooltip]]"
+        caption="[[item.caption]]"
+        items="[[item.items]]"></toolbar-menu-button>
+      <div class="toolbar-separator"></div>
+    </template>
     <!-- bold/italic/underline/strike -->
     <template is="dom-repeat" items="[[formatItems]]">
-      <toolbar-normal-button name="[[item.name]]" tooltip="[[item.tooltip]]"></toolbar-normal-button>
+      <toolbar-normal-button type="[[item.type]]" tooltip="[[item.tooltip]]"></toolbar-normal-button>
     </template>
     <div class="toolbar-separator"></div>
     <!-- color/highlight color -->
-
+    <!-- TODO -->
 
 
     <!-- align(left, center, right, justify) -->
     <template is="dom-repeat" items="[[alignItems]]">
-      <toolbar-normal-button name="[[item.name]]" tooltip="[[item.tooltip]]"></toolbar-normal-button>
+      <toolbar-normal-button type="[[item.type]]" tooltip="[[item.tooltip]]"></toolbar-normal-button>
     </template>
     <div class="toolbar-separator"></div>
     <!-- list(order, unorder, todo) -->
     <template is="dom-repeat" items="[[listItems]]">
-      <toolbar-normal-button name="[[item.name]]" tooltip="[[item.tooltip]]"></toolbar-normal-button>
+      <toolbar-normal-button type="[[item.type]]" tooltip="[[item.tooltip]]"></toolbar-normal-button>
     </template>
     <div class="toolbar-separator"></div>
     <!-- indent/unindent -->
     <template is="dom-repeat" items="[[indentItems]]">
-      <toolbar-normal-button name="[[item.name]]" tooltip="[[item.tooltip]]"></toolbar-normal-button>
+      <toolbar-normal-button type="[[item.type]]" tooltip="[[item.tooltip]]"></toolbar-normal-button>
     </template>
     <div class="toolbar-separator"></div>
 
+
+    <toolbar-dropdown-list id="dropdown"></toolbar-dropdown-list>
   </template>
   <script>
     class ToolboxToolbar extends Polymer.Element {
@@ -67,65 +83,79 @@
           undoItems: {
             type: Array,
             value: [{
-              name: 'undo',
+              type: 'undo',
               tooltip: 'Undo (⌘Z)'
             }, {
-              name: 'redo',
+              type: 'redo',
               tooltip: 'Rndo (⌘Y)'
             }]
           },
           formatItems: {
             type: Array,
             value: [{
-              name: 'bold',
+              type: 'bold',
               tooltip: ''
             }, {
-              name: 'italic',
+              type: 'italic',
               tooltip: ''
             }, {
-              name: 'underline',
+              type: 'underline',
               tooltip: ''
             }, {
-              name: 'strike',
+              type: 'strike',
               tooltip: ''
+            }]
+          },
+          fontItems: {
+            type: Array,
+            value: [{
+              type: 'font',
+              tooltip: 'Font',
+              caption: 'Arial',
+              items: ['Arial', 'Consolas', 'Calibri']
+            }, {
+              type: 'font-size',
+              tooltip: 'Font size',
+              caption: '16',
+              items: [16, 18, 20, 24, 30, 40]
             }]
           },
           alignItems: {
             type: Array,
             value: [{
-              name: 'align-left',
+              type: 'align-left',
               tooltip: 'Left align (⌘+Shift+L)'
             }, {
-              name: 'align-center',
+              type: 'align-center',
               tooltip: 'Center align (⌘+Shift+E)'
             }, {
-              name: 'align-right',
+              type: 'align-right',
               tooltip: 'Right align (⌘+Shift+R)'
             }, {
-              name: 'align-justify',
+              type: 'align-justify',
               tooltip: 'Justify (⌘+Shift+J)'
             }]
           },
           listItems: {
             type: Array,
             value: [{
-              name: 'ordered-list',
+              type: 'ordered-list',
               tooltip: ''
             }, {
-              name: 'unordered-list',
+              type: 'unordered-list',
               tooltip: ''
             }, {
-              name: 'todo-list',
+              type: 'todo-list',
               tooltip: ''
             }]
           },
           indentItems: {
             type: Array,
             value: [{
-              name: 'indent',
+              type: 'indent',
               tooltip: 'Indent (⌘[)'
             }, {
-              name: 'unindent',
+              type: 'unindent',
               tooltip: 'Unindent (⌘[)'
             }]
           }
@@ -133,13 +163,47 @@
       }
       connectedCallback () {
         super.connectedCallback()
-        window.addEventListener('toolbar-tap', (evt) => {
-          console.log('---', evt.detail)
-        })
+        this._toolbarBtnTapHandler = (evt) => {
+          let type = evt.detail.type
+          if (type === 'font' || type === 'font-size') {
+            let isOpen = evt.detail.isOpen
+            if (isOpen) {
+              let items = evt.detail.items
+              let position = evt.detail.position
+              let selected = evt.detail.selected
+              this.$.dropdown.openDropdownList(type, items, selected, position)
+            } else {
+              this.$.dropdown.closeDropdownList()
+            }
+          } else {
+            console.log('-toolbar-button-tap-: ', type)
+          }
+        }
+        this._dropdownSelectHandler = (evt) => {
+          let type = evt.detail.type
+          let selected = evt.detail.selected
+          let index = this.fontItems.findIndex(item => item.type === type)
+
+          this.set(`fontItems.${index}.caption`, selected)
+
+          console.log('-toolbar-dropdown-select-: ', type, selected)
+        }
+        this._dropdownCloseHandler = (evt) => {
+          let type = evt.detail.type
+          let menuBtn = this.shadowRoot.querySelector(`#${type}`)
+          menuBtn && menuBtn.relatedDropdownListClose && menuBtn.relatedDropdownListClose()
+        }
+
+        window.addEventListener('toolbar-button-tap', this._toolbarBtnTapHandler.bind(this))
+        window.addEventListener('toolbar-dropdown-select', this._dropdownSelectHandler.bind(this))
+        window.addEventListener('toolbar-dropdown-close', this._dropdownCloseHandler.bind(this))
       }
       disconnectedCallback() {
         super.disconnectedCallback()
 
+        window.removeEventListener('toolbar-button-tap', this._toolbarBtnTapHandler.bind(this))
+        window.removeEventListener('toolbar-dropdown-select', this._dropdownSelectHandler.bind(this))
+        window.removeEventListener('toolbar-dropdown-close', this._dropdownCloseHandler.bind(this))
       }
     }
     window.customElements.define(ToolboxToolbar.is, ToolboxToolbar)
