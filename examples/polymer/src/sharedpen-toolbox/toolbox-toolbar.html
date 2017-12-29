@@ -176,7 +176,7 @@
               this.$.dropdown.closeDropdownList()
             }
           } else {
-            console.log('-toolbar-button-tap-: ', type)
+            this.execCommand(type)
           }
         }
         this._dropdownSelectHandler = (evt) => {
@@ -185,8 +185,7 @@
           let index = this.fontItems.findIndex(item => item.type === type)
 
           this.set(`fontItems.${index}.caption`, selected)
-
-          console.log('-toolbar-dropdown-select-: ', type, selected)
+          this.execCommand(type, selected)
         }
         this._dropdownCloseHandler = (evt) => {
           let type = evt.detail.type
@@ -204,6 +203,34 @@
         window.removeEventListener('toolbar-button-tap', this._toolbarBtnTapHandler.bind(this))
         window.removeEventListener('toolbar-dropdown-select', this._dropdownSelectHandler.bind(this))
         window.removeEventListener('toolbar-dropdown-close', this._dropdownCloseHandler.bind(this))
+      }
+
+      execCommand(command, value) {
+        console.log('[execCommand]: ', command, value)
+        switch (command) {
+          case 'undo': window.sharedPen.undo(); break
+          case 'redo': window.sharedPen.redo(); break
+
+          case 'font': window.sharedPen.font(value); break
+          case 'font-size':  window.sharedPen.fontSize(value); break
+
+          case 'bold': window.sharedPen.bold(); break
+          case 'italic': window.sharedPen.italic(); break
+          case 'underline': window.sharedPen.underline(); break
+          case 'strike': window.sharedPen.strike(); break
+
+          case 'align-left':
+          case 'align-center':
+          case 'align-right':
+          case 'align-justify': window.sharedPen.align(command.substr(command.indexOf('-')+1)); break
+
+          case 'ordered-list': window.sharedPen.orderedList(); break
+          case 'unordered-list': window.sharedPen.unorderedList(); break
+          case 'todo-list': window.sharedPen.todoList(); break
+
+          case 'indent': window.sharedPen.indent(); break
+          case 'unindent': window.sharedPen.unindent(); break
+        }
       }
     }
     window.customElements.define(ToolboxToolbar.is, ToolboxToolbar)
