@@ -52,7 +52,8 @@
     <div class="toolbar-separator"></div>
     <!-- color/highlight color -->
     <!-- TODO -->
-
+    <div style="font-family: Arial;">TODO: color</div>
+    <div class="toolbar-separator"></div>
 
     <!-- align(left, center, right, justify) -->
     <template is="dom-repeat" items="[[alignItems]]">
@@ -196,6 +197,10 @@
         window.addEventListener('toolbar-button-tap', this._toolbarBtnTapHandler.bind(this))
         window.addEventListener('toolbar-dropdown-select', this._dropdownSelectHandler.bind(this))
         window.addEventListener('toolbar-dropdown-close', this._dropdownCloseHandler.bind(this))
+
+        // setTimeout to add realtimeTextAttrsChanged event listener,
+        // ensure the sharedPen has been initialized
+        setTimeout(this.handleRealtimeTextAttrsSelected.bind(this))
       }
       disconnectedCallback() {
         super.disconnectedCallback()
@@ -231,6 +236,13 @@
           case 'indent': window.sharedPen.indent(); break
           case 'unindent': window.sharedPen.unindent(); break
         }
+      }
+      // 实时显示当前文本属性状态
+      handleRealtimeTextAttrsSelected () {
+        window.sharedPen.on('realtimeTextAttrsChanged', (attrs) => {
+
+          console.log('---', attrs)
+        })
       }
     }
     window.customElements.define(ToolboxToolbar.is, ToolboxToolbar)
