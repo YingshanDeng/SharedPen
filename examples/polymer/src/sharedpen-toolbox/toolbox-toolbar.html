@@ -191,11 +191,6 @@
           }
         }
         this._dropdownSelectHandler = (evt) => {
-          let type = evt.detail.type
-          let selected = evt.detail.selected
-          let index = this.fontItems.findIndex(item => item.type === type)
-
-          this.set(`fontItems.${index}.caption`, selected)
           this.execCommand(type, selected)
         }
         this._dropdownCloseHandler = (evt) => {
