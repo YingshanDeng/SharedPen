@@ -251,6 +251,7 @@
       handleRealtimeTextAttrsSelected () {
         window.sharedPen.on('realtimeTextAttrsChanged', (attrs) => {
           this.set('currentSelectedStates', attrs)
+          console.log('---current state: ', attrs)
         })
       }
       // 文本属性按键监听是否选中
@@ -279,7 +280,7 @@
           if (type === 'lt' && !value) {
             return currentSelectedStates[type] === 't' || currentSelectedStates[type] === 'tc'
           } else {
-            return currentSelectedStates[type] === value
+            return currentSelectedStates[type] === true || currentSelectedStates[type] === value
           }
         } else if (type === 'la') {
           return value === 'left' // align default: left
