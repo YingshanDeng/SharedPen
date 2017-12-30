@@ -24,7 +24,8 @@
       button:hover {
         background-color: #f0f0f0;
       }
-      button:active {
+      button:active,
+      :host([selected]) button {
         background-color: #e0e0e0;
       }
 
@@ -33,7 +34,8 @@
         opacity: 0.6;
         transition: opacity 200ms linear;
       }
-      button:hover .icon {
+      button:hover .icon,
+      :host([selected]) .icon {
         opacity: 1;
       }
     </style>

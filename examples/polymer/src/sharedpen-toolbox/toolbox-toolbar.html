@@ -47,7 +47,10 @@
     </template>
     <!-- bold/italic/underline/strike -->
     <template is="dom-repeat" items="[[formatItems]]">
-      <toolbar-normal-button type="[[item.type]]" tooltip="[[item.tooltip]]"></toolbar-normal-button>
+      <toolbar-normal-button
+      type$="[[item.type]]"
+      tooltip="[[item.tooltip]]"
+      selected$="[[_monitorAttrsSelected(item.type,currentSelectedStates)]]"></toolbar-normal-button>
     </template>
     <div class="toolbar-separator"></div>
     <!-- color/highlight color -->
@@ -57,12 +60,18 @@
 
     <!-- align(left, center, right, justify) -->
     <template is="dom-repeat" items="[[alignItems]]">
-      <toolbar-normal-button type="[[item.type]]" tooltip="[[item.tooltip]]"></toolbar-normal-button>
+      <toolbar-normal-button
+        type$="[[item.type]]"
+        tooltip="[[item.tooltip]]"
+        selected$="[[_monitorAttrsSelected(item.type,currentSelectedStates)]]"></toolbar-normal-button>
     </template>
     <div class="toolbar-separator"></div>
     <!-- list(order, unorder, todo) -->
     <template is="dom-repeat" items="[[listItems]]">
-      <toolbar-normal-button type="[[item.type]]" tooltip="[[item.tooltip]]"></toolbar-normal-button>
+      <toolbar-normal-button
+        type$="[[item.type]]"
+        tooltip="[[item.tooltip]]"
+        selected$="[[_monitorAttrsSelected(item.type,currentSelectedStates)]]"></toolbar-normal-button>
     </template>
     <div class="toolbar-separator"></div>
     <!-- indent/unindent -->
@@ -159,7 +168,8 @@
               type: 'unindent',
               tooltip: 'Unindent (⌘[)'
             }]
-          }
+          },
+          currentSelectedStates: Object
         }
       }
       connectedCallback () {
@@ -240,9 +250,42 @@
       // 实时显示当前文本属性状态
       handleRealtimeTextAttrsSelected () {
         window.sharedPen.on('realtimeTextAttrsChanged', (attrs) => {
-
-          console.log('---', attrs)
+          this.set('currentSelectedStates', attrs)
         })
+      }
+      // 文本属性按键监听是否选中
+      _monitorAttrsSelected (type, currentSelectedStates) {
+        if (!currentSelectedStates) { return false }
+        switch (type) {
+          case 'bold': return this._checkedSelectedStates(currentSelectedStates, 'b')
+          case 'italic': return this._checkedSelectedStates(currentSelectedStates, 'i')
+          case 'underline': return this._checkedSelectedStates(currentSelectedStates, 'u')
+          case 'strike': return this._checkedSelectedStates(currentSelectedStates, 's')
+
+          case 'align-left':
+          case 'align-center':
+          case 'align-right':
+          case 'align-justify':
+            var laValue = type.substr(type.indexOf('-')+1)
+            return this._checkedSelectedStates(currentSelectedStates, 'la', laValue)
+
+          case 'ordered-list': return this._checkedSelectedStates(currentSelectedStates, 'lt', 'o')
+          case 'unordered-list': return this._checkedSelectedStates(currentSelectedStates, 'lt', 'u')
+          case 'todo-list': return this._checkedSelectedStates(currentSelectedStates, 'lt')
+        }
+      }
+      _checkedSelectedStates (currentSelectedStates, type, value) {
+        if (type in currentSelectedStates) {
+          if (type === 'lt' && !value) {
+            return currentSelectedStates[type] === 't' || currentSelectedStates[type] === 'tc'
+          } else {
+            return currentSelectedStates[type] === value
+          }
+        } else if (type === 'la') {
+          return value === 'left' // align default: left
+        } else {
+          return false
+        }
       }
     }
     window.customElements.define(ToolboxToolbar.is, ToolboxToolbar)
