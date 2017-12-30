@@ -5,6 +5,11 @@
         display: block;
         margin: 0 3px;
       }
+      :host([disabled]) {
+        opacity: 0.4;
+        pointer-events: none;
+      }
+
       /* button */
       button {
         display: flex;
