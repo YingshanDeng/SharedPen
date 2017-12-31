@@ -87,7 +87,8 @@
         tooltip="[[item.tooltip]]"></toolbar-normal-button>
     </template>
     <div class="toolbar-separator"></div>
-
+    <!-- image -->
+    <toolbar-normal-button type="image" tooltip="Image"></toolbar-normal-button>
 
     <toolbar-dropdown-list id="dropdown"></toolbar-dropdown-list>
     <toolbar-color-palette id="colorPalette"></toolbar-color-palette>
@@ -282,6 +283,8 @@
 
           case 'indent': window.sharedPen.indent(); break
           case 'unindent': window.sharedPen.unindent(); break
+
+          case 'image': alert('TODO: insert Image')
         }
       }
       // 实时显示当前文本属性状态
