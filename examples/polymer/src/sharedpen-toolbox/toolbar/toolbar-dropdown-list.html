@@ -24,7 +24,11 @@
       }
     </style>
     <template is="dom-repeat" items="[[items]]">
-      <div class="list-item" on-tap="_onTap" selected$="[[_handleListItemSelected(item)]]">[[item]]</div>
+      <div
+        class="list-item"
+        style$="[[_fontStyle(type,item)]]"
+        on-tap="_onTap"
+        selected$="[[_handleListItemSelected(item)]]">[[item]]</div>
     </template>
   </template>
   <script>
@@ -38,6 +42,12 @@
         selected: String,
         items: Array
       }
+    }
+    _fontStyle (type, item) {
+      if (type === 'font') {
+        return `font-family: ${item}`
+      }
+      return `font-family: Arial`
     }
     connectedCallback() {
       super.connectedCallback()

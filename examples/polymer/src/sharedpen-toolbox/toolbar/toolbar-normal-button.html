@@ -1,6 +1,8 @@
+<link rel="import" href="toolbar-shared-style.html">
+
 <dom-module id="toolbar-normal-button">
   <template>
-    <style>
+    <style include="toolbar-shared-style">
       :host {
         display: block;
         margin: 0 3px;
@@ -9,32 +11,9 @@
         opacity: 0.4;
         pointer-events: none;
       }
-
-      /* button */
       button {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        border: none;
-        outline: none;
         width: 28px;
-        height: 28px;
-        padding: 0;
-        border-radius: 2px;
-        background-color: #fff;
-        cursor: pointer;
-        transition: background-color 200ms linear;
       }
-      button:hover {
-        background-color: #f0f0f0;
-      }
-      button:active,
-      :host([selected]) button {
-        background-color: #e0e0e0;
-      }
-
-      /* button icon */
       button .icon {
         opacity: 0.6;
         transition: opacity 200ms linear;

@@ -1,28 +1,11 @@
+<link rel="import" href="toolbar-shared-style.html">
+
 <dom-module id="toolbar-menu-button">
   <template>
-    <style>
+    <style include="toolbar-shared-style">
       :host {
         display: flex;
       }
-      button {
-        border: none;
-        outline: none;
-        width: auto;
-        height: 28px;
-        padding: 0;
-        border-radius: 2px;
-        background-color: #fff;
-        cursor: pointer;
-        transition: background-color 200ms linear;
-      }
-      button:hover,
-      button[selected] {
-        background-color: #f0f0f0;
-      }
-      button:active {
-        background-color: #e0e0e0;
-      }
-
       .caption {
         display: inline-block;
         float: left;
@@ -39,21 +22,12 @@
         width: var(--caption-with, 70px);
       }
       .dropdown {
-        display: inline-block;
-        float: right;
-        width: 8px;
-        height: 28px;
         margin-left: 4px;
         margin-right: 8px;
-        opacity: 0.6;
-        background-image: url(../../images/dropdown.svg);
-        background-repeat: no-repeat;
-        background-position: center;
       }
-
     </style>
     <button id="button" on-tap="_onTap">
-      <div class="caption">[[caption]]</div>
+      <div class="caption">[[selected]]</div>
       <div class="dropdown"></div>
     </button>
   </template>
@@ -66,7 +40,7 @@
         return {
           type: String,
           tooltip: String,
-          caption: String,
+          selected: String,
           items: Array
         }
       }
@@ -100,7 +74,7 @@
                 left: rect.left,
                 top: rect.top + rect.height + 2 // margin: 2
               },
-              selected: this.caption,
+              selected: this.selected,
               items: this.items
             },
             bubbles: true,

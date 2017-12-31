@@ -1,6 +1,9 @@
 <link rel="import" href="toolbar/toolbar-normal-button.html">
 <link rel="import" href="toolbar/toolbar-menu-button.html">
 <link rel="import" href="toolbar/toolbar-dropdown-list.html">
+<link rel="import" href="toolbar/toolbar-color-button.html">
+<link rel="import" href="toolbar/toolbar-highlight-button.html">
+<link rel="import" href="toolbar/toolbar-color-palette.html">
 
 <dom-module id="toolbox-toolbar">
   <template>
@@ -44,7 +47,7 @@
         id$="[[item.type]]"
         type="[[item.type]]"
         tooltip="[[item.tooltip]]"
-        caption="[[item.caption]]"
+        selected="[[_getCurrentAttrsValue(item.type,currentStates)]]"
         items="[[item.items]]"></toolbar-menu-button>
       <div class="toolbar-separator"></div>
     </template>
@@ -53,20 +56,20 @@
       <toolbar-normal-button
       type="[[item.type]]"
       tooltip="[[item.tooltip]]"
-      selected$="[[_monitorAttrsSelected(item.type,currentSelectedStates)]]"></toolbar-normal-button>
+      selected$="[[_monitorAttrsSelected(item.type,currentStates)]]"></toolbar-normal-button>
     </template>
     <div class="toolbar-separator"></div>
     <!-- color/highlight color -->
-    <!-- TODO -->
-    <div style="font-family: Arial;">TODO: color</div>
+    <toolbar-color-button id="color" selected="[[_getCurrentAttrsValue('color',currentStates)]]"></toolbar-color-button>
     <div class="toolbar-separator"></div>
-
+    <toolbar-highlight-button id="highlight" selected="[[_getCurrentAttrsValue('highlight',currentStates)]]"></toolbar-highlight-button>
+    <div class="toolbar-separator"></div>
     <!-- align(left, center, right, justify) -->
     <template is="dom-repeat" items="[[alignItems]]">
       <toolbar-normal-button
         type="[[item.type]]"
         tooltip="[[item.tooltip]]"
-        selected$="[[_monitorAttrsSelected(item.type,currentSelectedStates)]]"></toolbar-normal-button>
+        selected$="[[_monitorAttrsSelected(item.type,currentStates)]]"></toolbar-normal-button>
     </template>
     <div class="toolbar-separator"></div>
     <!-- list(order, unorder, todo) -->
@@ -74,7 +77,7 @@
       <toolbar-normal-button
         type="[[item.type]]"
         tooltip="[[item.tooltip]]"
-        selected$="[[_monitorAttrsSelected(item.type,currentSelectedStates)]]"></toolbar-normal-button>
+        selected$="[[_monitorAttrsSelected(item.type,currentStates)]]"></toolbar-normal-button>
     </template>
     <div class="toolbar-separator"></div>
     <!-- indent/unindent -->
@@ -87,6 +90,7 @@
 
 
     <toolbar-dropdown-list id="dropdown"></toolbar-dropdown-list>
+    <toolbar-color-palette id="colorPalette"></toolbar-color-palette>
   </template>
   <script>
     class ToolboxToolbar extends Polymer.Element {
@@ -126,13 +130,11 @@
             value: [{
               type: 'font',
               tooltip: 'Font',
-              caption: 'Arial',
-              items: ['Arial', 'Consolas', 'Calibri']
+              items: ['Arial', 'Consolas', 'Impact', 'Verdana']
             }, {
               type: 'font-size',
               tooltip: 'Font size',
-              caption: '16',
-              items: [16, 18, 20, 24, 30, 40]
+              items: ['16', '18', '20', '24', '30', '40']
             }]
           },
           alignItems: {
@@ -175,44 +177,72 @@
             }]
           },
 
-          currentSelectedStates: Object,
+          currentStates: Object,
           canUndoRedoState: Object
         }
       }
       connectedCallback () {
         super.connectedCallback()
-        this._toolbarBtnTapHandler = (evt) => {
-          let type = evt.detail.type
+        this._toolbarBtnTapHandler = ({ detail }) => {
+          let type = detail.type
           if (type === 'font' || type === 'font-size') {
-            let isOpen = evt.detail.isOpen
+            let isOpen = detail.isOpen
             if (isOpen) {
-              let items = evt.detail.items
-              let position = evt.detail.position
-              let selected = evt.detail.selected
+              let items = detail.items
+              let position = detail.position
+              let selected = detail.selected
               this.$.dropdown.openDropdownList(type, items, selected, position)
             } else {
               this.$.dropdown.closeDropdownList()
+            }
+          } else if (type === "color" || type === 'highlight') {
+            let isOpen = detail.isOpen
+            if (isOpen) {
+              let selected = detail.selected
+              let position = detail.position
+              this.$.colorPalette.openColorPalette(type, selected, position)
+            } else {
+              this.$.colorPalette.closeColorPalette()
             }
           } else {
             this.execCommand(type)
           }
         }
         this._dropdownSelectHandler = (evt) => {
+          let type = evt.detail.type
+          let selected = evt.detail.selected
+
+          this.shadowRoot.querySelector(`#${type}`).selected = selected
           this.execCommand(type, selected)
         }
         this._dropdownCloseHandler = (evt) => {
           let type = evt.detail.type
           let menuBtn = this.shadowRoot.querySelector(`#${type}`)
-          menuBtn && menuBtn.relatedDropdownListClose && menuBtn.relatedDropdownListClose()
+          menuBtn.relatedDropdownListClose()
+        }
+
+        this._paletteSelectHandler = ({ detail }) => {
+          let type = detail.type
+          let selected = detail.selected
+
+          this.$[type].selected = selected
+          this.execCommand(type, selected)
+        }
+        this._paletteCloseHandler = ({ detail }) => {
+          let type = detail.type
+          this.$[type].relatedPaletteClose()
         }
 
         window.addEventListener('toolbar-button-tap', this._toolbarBtnTapHandler.bind(this))
         window.addEventListener('toolbar-dropdown-select', this._dropdownSelectHandler.bind(this))
         window.addEventListener('toolbar-dropdown-close', this._dropdownCloseHandler.bind(this))
 
+        window.addEventListener('toolbar-palette-select', this._paletteSelectHandler.bind(this))
+        window.addEventListener('toolbar-palette-close', this._paletteCloseHandler.bind(this))
+
         // setTimeout to add realtimeTextAttrsChanged event listener,
         // ensure the sharedPen has been initialized
-        setTimeout(this.handleRealtimeTextAttrsSelected.bind(this))
+        setTimeout(this.handleRealtimeTextAttrsState.bind(this))
       }
       disconnectedCallback() {
         super.disconnectedCallback()
@@ -220,6 +250,8 @@
         window.removeEventListener('toolbar-button-tap', this._toolbarBtnTapHandler.bind(this))
         window.removeEventListener('toolbar-dropdown-select', this._dropdownSelectHandler.bind(this))
         window.removeEventListener('toolbar-dropdown-close', this._dropdownCloseHandler.bind(this))
+        window.removeEventListener('toolbar-palette-select', this._paletteSelectHandler.bind(this))
+        window.removeEventListener('toolbar-palette-close', this._paletteCloseHandler.bind(this))
       }
 
       execCommand(command, value) {
@@ -229,12 +261,15 @@
           case 'redo': window.sharedPen.redo(); break
 
           case 'font': window.sharedPen.font(value); break
-          case 'font-size':  window.sharedPen.fontSize(value); break
+          case 'font-size': window.sharedPen.fontSize(value+'px'); break
 
           case 'bold': window.sharedPen.bold(); break
           case 'italic': window.sharedPen.italic(); break
           case 'underline': window.sharedPen.underline(); break
           case 'strike': window.sharedPen.strike(); break
+
+          case 'color': window.sharedPen.color(value); break
+          case 'highlight': window.sharedPen.highlight(value); break
 
           case 'align-left':
           case 'align-center':
@@ -250,10 +285,10 @@
         }
       }
       // 实时显示当前文本属性状态
-      handleRealtimeTextAttrsSelected () {
+      handleRealtimeTextAttrsState () {
         window.sharedPen.on('ready', () => {
           window.sharedPen.on('realtimeTextAttrsChanged', (attrs) => {
-            this.set('currentSelectedStates', attrs)
+            this.set('currentStates', attrs)
           })
 
           window.sharedPen.on('undoStatesChanged', (states) => {
@@ -262,32 +297,57 @@
         })
       }
       // 文本属性按键监听是否选中
-      _monitorAttrsSelected (type, currentSelectedStates) {
-        if (!currentSelectedStates) { return false }
+      _monitorAttrsSelected (type, currentStates) {
+        if (!currentStates) { return false }
         switch (type) {
-          case 'bold': return this._checkedSelectedStates(currentSelectedStates, 'b')
-          case 'italic': return this._checkedSelectedStates(currentSelectedStates, 'i')
-          case 'underline': return this._checkedSelectedStates(currentSelectedStates, 'u')
-          case 'strike': return this._checkedSelectedStates(currentSelectedStates, 's')
+          case 'bold': return this._checkedSelectedStates(currentStates, 'b')
+          case 'italic': return this._checkedSelectedStates(currentStates, 'i')
+          case 'underline': return this._checkedSelectedStates(currentStates, 'u')
+          case 'strike': return this._checkedSelectedStates(currentStates, 's')
 
           case 'align-left':
           case 'align-center':
           case 'align-right':
           case 'align-justify':
             var laValue = type.substr(type.indexOf('-')+1)
-            return this._checkedSelectedStates(currentSelectedStates, 'la', laValue)
+            return this._checkedSelectedStates(currentStates, 'la', laValue)
 
-          case 'ordered-list': return this._checkedSelectedStates(currentSelectedStates, 'lt', 'o')
-          case 'unordered-list': return this._checkedSelectedStates(currentSelectedStates, 'lt', 'u')
-          case 'todo-list': return this._checkedSelectedStates(currentSelectedStates, 'lt')
+          case 'ordered-list': return this._checkedSelectedStates(currentStates, 'lt', 'o')
+          case 'unordered-list': return this._checkedSelectedStates(currentStates, 'lt', 'u')
+          case 'todo-list': return this._checkedSelectedStates(currentStates, 'lt')
         }
       }
-      _checkedSelectedStates (currentSelectedStates, type, value) {
-        if (type in currentSelectedStates) {
+      _getCurrentAttrsValue (type, currentStates) {
+        function getValue (type, currentStates) {
+          if (currentStates && (type in currentStates)) {
+            if (type === 'fs') {
+              return parseInt(currentStates[type])
+            }
+            return currentStates[type]
+          } else if (type === 'c') {
+            return 'rgb(0, 0, 0)'
+          } else if (type === 'bc') {
+            return 'rgb(255, 255, 255)'
+          } else if (type === 'f') {
+            return 'Arial'
+          } else if (type === 'fs') {
+            return '16'
+          }
+        }
+
+        switch (type) {
+          case 'font': return getValue('f', currentStates)
+          case 'font-size': return getValue('fs', currentStates)
+          case 'color': return getValue('c', currentStates)
+          case 'highlight': return getValue('bc', currentStates)
+        }
+      }
+      _checkedSelectedStates (currentStates, type, value) {
+        if (type in currentStates) {
           if (type === 'lt' && !value) {
-            return currentSelectedStates[type] === 't' || currentSelectedStates[type] === 'tc'
+            return currentStates[type] === 't' || currentStates[type] === 'tc'
           } else {
-            return currentSelectedStates[type] === true || currentSelectedStates[type] === value
+            return currentStates[type] === true || currentStates[type] === value
           }
         } else if (type === 'la') {
           return value === 'left' // align default: left
