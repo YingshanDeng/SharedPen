@@ -89,7 +89,7 @@ gulp.task('default', ['clean:dist'], (cb) => {
   runSequence(['bundle:scripts', 'bundle:css'], cb)
 })
 
-gulp.task('copy', () => {
+gulp.task('copylib', () => {
   return gulp.src('dist/sharedpen.min.js')
     .pipe(gulp.dest('examples/polymer/src/lib'))
 })

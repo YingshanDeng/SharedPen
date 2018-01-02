@@ -6,7 +6,8 @@
   "scripts": {
     "fix": "standard --fix lib/*.js server.js gulpfile.js",
     "test": "standard lib/*.js server.js gulpfile.js",
-    "bundle": "gulp"
+    "bundle": "gulp",
+    "bundle-polymer-demo": "gulp && gulp copylib && cd examples/polymer && npm run bundle"
   },
   "repository": {
     "type": "git",

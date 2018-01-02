@@ -46,7 +46,20 @@ http://127.0.0.1:5000
 ```
 
 ## Bundle
-TODO ...
+### bundle SharedPen lib
+```
+npm run bundle
+```
+
+### bundle SharedPen Polymer Demo
+```
+npm run bundle-polymer-demo
+```
+
+You should install polymer-cli first:
+```
+npm install -g polymer-cli
+```
 
 ## License
 MIT
