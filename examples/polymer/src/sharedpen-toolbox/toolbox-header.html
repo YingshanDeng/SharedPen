@@ -23,11 +23,37 @@
       }
     </style>
     <div class="icon">SharedPen</div>
+
+    <div>
+      <template is="dom-repeat" items="[[clients]]" as="client">
+
+      </template>
+    </div>
   </template>
   <script>
     class ToolboxHeader extends Polymer.Element {
       static get is () {
         return 'toolbox-header'
+      }
+      static get properties () {
+        return {
+          clients: {
+            type: Array,
+            value: []
+          }
+        }
+      }
+      connectedCallback () {
+        super.connectedCallback()
+        setTimeout(() => {
+          window.sharedPen.on('ready', () => {
+            window.sharedPen.on('clientsChanged', (clients) => {
+              // TODO ...
+              console.log('--------', clients)
+              this.set('clients', clients)
+            })
+          })
+        })
       }
     }
     window.customElements.define(ToolboxHeader.is, ToolboxHeader)
