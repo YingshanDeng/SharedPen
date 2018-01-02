@@ -5,16 +5,8 @@ var http = require('http').Server(app)
 var io = require('socket.io')(http)
 var path = require('path')
 
-app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, '/index.html'))
-})
-
-app.use(cors())
-app.use(express.static('build'))
-app.use(express.static('node_modules'))
-
-http.listen(3000, function () {
-  console.log('listening on *:3000')
+http.listen(4000, function () {
+  console.log('listening on *:4000')
 })
 
 var EditorSocketIOServer = require('../build/SharedPenServer.js')

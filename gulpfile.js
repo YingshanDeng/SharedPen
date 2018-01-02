@@ -11,18 +11,20 @@ var cleanCSS = require('gulp-clean-css')
 var cached = require('gulp-cached')
 var babel = require('gulp-babel')
 var del = require('del')
-// var browserSync = require('browser-sync')
+var browserSync = require('browser-sync')
 
+// serve sharedpen source files and compile them
 gulp.task('serve', ['clean:build'], () => {
-  // browserSync({
-  //   port: 9999,
-  //   logPrefix: 'SharedPen',
-  //   server: {
-  //     baseDir: './'
-  //   },
-  //   notify: false
-  // })
   runSequence(['build:scripts', 'build:css'])
+  browserSync({
+    port: 3000,
+    logPrefix: 'SharedPen',
+    server: {
+      baseDir: './build'
+    },
+    notify: false,
+    open: false
+  })
   gulp.watch(['lib/*.js'], ['build:scripts'])
   gulp.watch(['lib/*.css'], ['build:css'])
 })
@@ -85,4 +87,9 @@ gulp.task('clean:dist', () => {
 
 gulp.task('default', ['clean:dist'], (cb) => {
   runSequence(['bundle:scripts', 'bundle:css'], cb)
+})
+
+gulp.task('copy', () => {
+  return gulp.src('dist/sharedpen.min.js')
+    .pipe(gulp.dest('examples/polymer/src/lib'))
 })

@@ -62,7 +62,7 @@
         // HACK: ShredPen dynamic style add place
         window.SharedPenRoot = this.shadowRoot
         // init SharedPen
-        this.sharedPen = new SharedPen(this.cm, 'http://localhost:3000', this.shadowRoot)
+        this.sharedPen = new SharedPen(this.cm, `http://${window.location.hostname}:4000`, this.shadowRoot)
         window.sharedPen = this.sharedPen
       }
       connectedCallback () {
