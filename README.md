@@ -32,7 +32,6 @@ Open in Chrome, debug the SharedPen server side code:
 chrome://inspect/#devices
 ```
 
-
 ### setup polymer-demo static files
 ```
 # path: example/polymer
