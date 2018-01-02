@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "bundle": "gulp html && polymer build"
+    "bundle": "gulp html:prepare && polymer build && gulp html:windUp"
   },
   "author": "Yinshandeng <Yinshandeng@gmail.com>",
   "license": "MIT",
@@ -14,6 +14,7 @@
     "socket.io": "^2.0.4"
   },
   "devDependencies": {
-    "gulp-html-replace": "^1.6.2"
+    "gulp-html-replace": "^1.6.2",
+    "gulp-replace": "^0.6.1"
   }
 }
