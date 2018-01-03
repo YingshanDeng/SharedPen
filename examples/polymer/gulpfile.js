@@ -1,6 +1,7 @@
 var gulp = require('gulp')
 var replace = require('gulp-replace')
 var htmlreplace = require('gulp-html-replace')
+var gzip = require('gulp-gzip')
 
 gulp.task('html:prepare', () => {
   return gulp.src('index.html')
@@ -28,4 +29,10 @@ gulp.task('html:windUp', () => {
     <script src="http://localhost:3000/SharedPen.js"></script>
     <!-- endbuild -->`))
     .pipe(gulp.dest('./'))
+})
+
+gulp.task('gzip', () => {
+  return gulp.src('build/**/*.{css,html,js,svg,png,jpg,jpeg}')
+    .pipe(gzip({append: true}))
+    .pipe(gulp.dest('build/'))
 })
