@@ -303,9 +303,10 @@
         super.connectedCallback()
         this._opening = false
         this.windowClickHandler = (evt) => {
+          let path = evt.composedPath()
           let inside = false
-          for (var i = 0; i < evt.path.length - 1; i++) {
-            var ele = evt.path[i]
+          for (var i = 0; i < path.length - 1; i++) {
+            var ele = path[i]
             if (ele instanceof Node && ele.tagName &&
               (ele.tagName.toLowerCase() === 'toolbar-color-button' ||
                 ele.tagName.toLowerCase() === 'toolbar-highlight-button' ||
