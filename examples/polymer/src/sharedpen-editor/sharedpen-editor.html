@@ -22,17 +22,23 @@
       }
       .codemirror-container {
         position: relative;
+      }
+      .CodeMirror {
         width: 613px;
-        min-width: 613px;
-        height: 1027px;
+        height: auto;
+        min-height: 1027px;
+      }
+      .CodeMirror-scroll {
+        height: auto;
+        overflow-y: hidden;
+        overflow-x: auto;
+        margin-bottom: 0;
+      }
+      .sharedpen-wrapper {
         box-shadow: 0 0 0 0.75pt #d1d1d1, 0 0 3pt 0.75pt #ccc;
         background: #fff;
         margin: 6pt;
         padding: 96px;
-      }
-      .CodeMirror {
-        width: 613px;
-        height: 1027px;
       }
 
     </style>
@@ -47,28 +53,14 @@
       }
       ready () {
         super.ready()
-        // int CodeMirror
-        this.cm = window.CodeMirror.fromTextArea(
-          this.$.note,
-          {
-            lineNumbers: false,
-            lineWrapping: true,
-            cursorHeight: 0.88
-          }
-        )
-        this.shadowRoot.querySelector('.codemirror-container').addEventListener('click', () => {
-          this.cm.focus()
-        })
         // HACK: ShredPen dynamic style add place
         window.SharedPenRoot = this.shadowRoot
         // init SharedPen
-        this.sharedPen = new SharedPen(this.cm, `http://${window.location.hostname}`, this.shadowRoot)
+        this.sharedPen = new SharedPen(this.$.note, `http://${window.location.hostname}`, this.shadowRoot)
         window.sharedPen = this.sharedPen
       }
       connectedCallback () {
         super.connectedCallback()
-        // this.cm.refresh()
-        // this.focus()
       }
     }
     window.customElements.define(SharedPenEditor.is, SharedPenEditor)
