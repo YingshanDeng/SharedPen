@@ -12,6 +12,7 @@ var cached = require('gulp-cached')
 var babel = require('gulp-babel')
 var del = require('del')
 var browserSync = require('browser-sync')
+var gzip = require('gulp-gzip')
 
 // serve sharedpen source files and compile them
 gulp.task('serve', ['clean:build'], () => {
@@ -85,8 +86,14 @@ gulp.task('clean:dist', () => {
   del.sync('dist')
 })
 
+gulp.task('gzip', () => {
+  return gulp.src('dist/**/*.min.js')
+    .pipe(gzip({append: true}))
+    .pipe(gulp.dest('dist/'))
+})
+
 gulp.task('default', ['clean:dist'], (cb) => {
-  runSequence(['bundle:scripts', 'bundle:css'], cb)
+  runSequence(['bundle:scripts', 'bundle:css'], 'gzip', cb)
 })
 
 gulp.task('copylib', () => {
