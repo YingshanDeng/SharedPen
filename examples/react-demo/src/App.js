@@ -1,18 +1,23 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './App.css'
+import Editor from './components/Editor'
+import Toolbox from './components/Toolbox'
 
 class App extends Component {
+  componentDidMount() {
+    // Todo 在这里初始化 sharedpen
+    //
+    let url = `${window.location.protocol}//${window.location.hostname}`
+    if (process.env.NODE_ENV === 'development') {
+      url += ':4000'
+    }
+    this.sharedPen = new window.SharedPen(this.textarea, url)
+  }
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div className="app">
+        <Toolbox />
+        <Editor textareaRef={el => this.textarea = el} />
       </div>
     );
   }
