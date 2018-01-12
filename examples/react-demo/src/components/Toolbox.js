@@ -7,7 +7,10 @@ export default class Toolbox extends Component {
     return (
       <div>
         <ToolboxHeader clients={this.props.clients}/>
-        <ToolboxToolbar attrs={this.props.attrs} undoStates={this.props.undoStates} />
+        <ToolboxToolbar
+          attrs={this.props.attrs}
+          undoStates={this.props.undoStates}
+          onExecCommand={this.props.onExecCommand} />
       </div>
     );
   }

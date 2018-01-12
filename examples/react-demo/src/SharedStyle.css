@@ -15,11 +15,11 @@ button {
   cursor: pointer;
   transition: background-color 200ms linear;
 }
-button:hover,
-button[data-selected="true"] {
+button:hover {
   background-color: #f0f0f0;
 }
-button:active {
+button:active,
+button[data-selected="true"] {
   background-color: #e0e0e0;
 }
 

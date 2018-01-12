@@ -6,9 +6,6 @@ export default class NormalButton extends Component {
     super(props)
     //
   }
-  // onClickHandler(e) {
-  //   this.props.onExecCommand(this.props.type, 'value')
-  // }
 
   render() {
     return (
@@ -16,7 +13,7 @@ export default class NormalButton extends Component {
         <button
           data-selected={this.props.selected}
           data-disabled={this.props.disabled}
-          onClick={e => this.props.onExecCommand(this.props.type, 'value') }>
+          onClick={e => this.props.onExecCommand(this.props.type) }>
           <div
             className={styles.icon}
             style={{content: `url(${this.props.icon})`}}></div>

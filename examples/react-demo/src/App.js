@@ -44,11 +44,43 @@ class App extends Component {
       this.setState({undoStates})
     })
   }
+  onExecCommand(command, value) {
+    console.log('[execCommand]: ', command, value)
+    switch (command) {
+      case 'undo': this.sharedPen.undo(); break
+      case 'redo': this.sharedPen.redo(); break
 
+      case 'font': this.sharedPen.font(value); break
+      case 'font-size': this.sharedPen.fontSize(value+'px'); break
+
+      case 'bold': this.sharedPen.bold(); break
+      case 'italic': this.sharedPen.italic(); break
+      case 'underline': this.sharedPen.underline(); break
+      case 'strike': this.sharedPen.strike(); break
+
+      case 'color': this.sharedPen.color(value); break
+      case 'highlight': this.sharedPen.highlight(value); break
+
+      case 'align-left':
+      case 'align-center':
+      case 'align-right':
+      case 'align-justify': this.sharedPen.align(command.substr(command.indexOf('-')+1)); break
+
+      case 'ordered-list': this.sharedPen.orderedList(); break
+      case 'unordered-list': this.sharedPen.unorderedList(); break
+      case 'todo-list': this.sharedPen.todoList(); break
+
+      case 'indent': this.sharedPen.indent(); break
+      case 'unindent': this.sharedPen.unindent(); break
+
+      case 'link': alert('TODO: Insert Link'); break
+      case 'image': alert('TODO: Insert Image'); break
+    }
+  }
   render() {
     return (
       <div className={styles.app}>
-        <Toolbox {...this.state} />
+        <Toolbox {...this.state} onExecCommand={(c, v) => this.onExecCommand(c, v)}/>
         <Editor textareaRef={el => this.textarea = el} />
       </div>
     );
