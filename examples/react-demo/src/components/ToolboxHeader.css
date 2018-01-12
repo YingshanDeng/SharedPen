@@ -1,4 +1,4 @@
-.toolbox-header {
+.toolboxHeader {
   position: relative;
   display: block;
   width: 100%;
@@ -34,7 +34,7 @@
   height: 100%;
 }
 
-.user-list {
+.userList {
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -42,7 +42,7 @@
   height: 100%;
 }
 
-.avatar-wrapper {
+.avatarWrapper {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -70,22 +70,10 @@
   background-image: url(../images/add.svg);
   background-repeat: no-repeat;
   background-position: center;
-  opacity: 0.6;
   margin: 0 10px;
+  opacity: 0.6;
+  transition: opacity 200ms;
 }
-
-button {
-  outline: none;
-  border: none;
-  border-radius: 2px;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #f0f0f0;
-}
-
-button:active {
-  background-color: #e0e0e0;
+.invitation:hover  {
+  opacity: 1;
 }

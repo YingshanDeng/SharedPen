@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
-import './codemirror.css'
-import './Editor.css'
+import styles from './Editor.css'
 
 export default class Editor extends Component {
-  // constructor(props) {
-  //   super(props)
-  // }
   render() {
     return (
-      <div className="editor">
-        <div className="codemirror-container">
+      <div className={styles.editor}>
+        <div className={styles.codemirrorContainer}>
           <textarea ref={this.props.textareaRef} ></textarea>
         </div>
       </div>

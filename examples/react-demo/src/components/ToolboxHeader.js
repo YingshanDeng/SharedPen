@@ -1,27 +1,29 @@
 import React, { Component } from 'react';
-import './ToolboxHeader.css'
+import styles from './ToolboxHeader.css'
 
 export default class ToolboxHeader extends Component {
-  constructor(props) {
-    super(props)
-  }
-  _onTapInvitation(e) {
-    console.log('--', e)
+  _renderClientList(clients) {
+    return clients.map(client => {
+      return (
+        <div
+          key={client.id}
+          className={styles.avatarWrapper}
+          style={{backgroundColor: `${client.color}`}}>
+          <div className={styles.avatar}>{client.name[0].toUpperCase()}</div>
+        </div>
+      )
+    })
   }
 
   render() {
     return (
-      <div className="toolbox-header">
-        <div className="icon">SharedPen</div>
-        <div className="wrapper">
-          <div className="user-list">
-            <template is="dom-repeat" items="[[clients]]" as="client">
-              <div className="avatar-wrapper">
-                <div className="avatar">[[_parseUserName(client.name)]]</div>
-              </div>
-            </template>
+      <div className={styles.toolboxHeader}>
+        <div className={styles.icon}>SharedPen</div>
+        <div className={styles.wrapper}>
+          <div className={styles.userList}>
+            {this._renderClientList(this.props.clients)}
           </div>
-          <button className="invitation" onClick={e => this._onTapInvitation(e)}></button>
+          <button className={styles.invitation}></button>
         </div>
       </div>
     );

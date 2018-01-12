@@ -5,9 +5,9 @@ import ToolboxToolbar from './ToolboxToolbar'
 export default class Toolbox extends Component {
   render() {
     return (
-      <div className="toolbox">
-        <ToolboxHeader />
-        <ToolboxToolbar />
+      <div>
+        <ToolboxHeader clients={this.props.clients}/>
+        <ToolboxToolbar attrs={this.props.attrs} undoStates={this.props.undoStates} />
       </div>
     );
   }
