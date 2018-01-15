@@ -139,17 +139,17 @@ export default class ToolboxToolbar extends Component {
 
     switch (t) {
       case 'font': return getValue('f', curAttrs);
-      case 'font-size': return getValue('fs', curAttrs);
-      case 'color': return getValue('c', curAttrs);
-      case 'highlight': return getValue('bc', curAttrs);
+      case 'font-size': return getValue('fs', curAttrs)
+      case 'color': return getValue('c', curAttrs)
+      case 'highlight': return getValue('bc', curAttrs)
     }
   }
   _checkedSelectedStates(curAttrs, t, value) {
     if (t in curAttrs) {
       if (t === 'lt' && !value) {
-        return curAttrs[t] === 't' || curAttrs[t] === 'tc';
+        return curAttrs[t] === 't' || curAttrs[t] === 'tc'
       } else {
-        return curAttrs[t] === true || curAttrs[t] === value;
+        return curAttrs[t] === true || curAttrs[t] === value
       }
     } else if (t === 'la') {
       return value === 'left' // align default: left
@@ -201,6 +201,6 @@ export default class ToolboxToolbar extends Component {
 
         {this._renderNormalButtonItems(this.items.entityItems)}
       </div>
-    );
+    )
   }
 }
