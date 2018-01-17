@@ -2,11 +2,6 @@ import React, { Component } from 'react';
 import styles from './NormalButton.css'
 
 export default class NormalButton extends Component {
-  constructor(props) {
-    super(props)
-    //
-  }
-
   render() {
     return (
       <div className={styles.normalButton}>

@@ -117,13 +117,14 @@ export default class ToolboxToolbar extends Component {
       case 'ordered-list': return this._checkedSelectedStates(curAttrs, 'lt', 'o')
       case 'unordered-list': return this._checkedSelectedStates(curAttrs, 'lt', 'u')
       case 'todo-list': return this._checkedSelectedStates(curAttrs, 'lt')
+      default: return false
     }
   }
   _getCurrentAttrsValue(t, curAttrs) {
     const getValue = (t, curAttrs) => {
       if (curAttrs && (t in curAttrs)) {
         if (t === 'fs') {
-          return parseInt(curAttrs[t])
+          return parseInt(curAttrs[t], 10)
         }
         return curAttrs[t]
       } else if (t === 'c') {
@@ -142,6 +143,7 @@ export default class ToolboxToolbar extends Component {
       case 'font-size': return getValue('fs', curAttrs)
       case 'color': return getValue('c', curAttrs)
       case 'highlight': return getValue('bc', curAttrs)
+      default: break
     }
   }
   _checkedSelectedStates(curAttrs, t, value) {

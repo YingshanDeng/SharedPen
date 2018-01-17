@@ -75,6 +75,7 @@ class App extends Component {
 
       case 'link': alert('TODO: Insert Link'); break
       case 'image': alert('TODO: Insert Image'); break
+      default: break
     }
   }
   render() {
