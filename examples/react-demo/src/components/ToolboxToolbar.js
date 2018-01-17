@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
+// components
 import NormalButton from './toolbar/NormalButton'
+import MenuButton from './toolbar/MenuButton'
+import DropdownList from './toolbar/DropdownList'
 import ColorButton from './toolbar/ColorButton'
 import HighlightButton from './toolbar/HighlightButton'
 import ColorPalette from './toolbar/ColorPalette'
-
+// styles
 import styles from './ToolboxToolbar.css'
-
 // icons
 import UndoIcon from '../images/undo.svg'
 import RedoIcon from '../images/redo.svg'
@@ -102,12 +104,19 @@ export default class ToolboxToolbar extends Component {
       }]
     }
 
-    //
     this.state = {
       // 色板
       palette: {
         type: null,
         isOpen: false,
+        selected: '',
+        position: {}
+      },
+      // 下拉列表
+      dropdown: {
+        type: null,
+        isOpen: false,
+        list: [],
         selected: '',
         position: {}
       }
@@ -117,14 +126,22 @@ export default class ToolboxToolbar extends Component {
   componentDidMount() {
     this._clickHandler = (evt) => {
       let _target = evt.target
+
       if (!this.colorBtn.button.contains(_target) &&
         !this.highlightBtn.button.contains(_target) &&
         !this.palette.paletteWrapper.contains(_target)) {
         this.onPalette(this.state.palette.type, false)
       }
+
+      if (!this.fontBtn.button.contains(_target) &&
+        !this.fontSizeBtn.button.contains(_target) &&
+        !this.dropdown.dropdownList.contains(_target)) {
+        this.onDropdown(this.state.dropdown.type, false)
+      }
     }
     this._resizeHandler = () => {
       this.onPalette(this.state.palette.type, false)
+      this.onDropdown(this.state.dropdown.type, false)
     }
     document.body.addEventListener('click', this._clickHandler)
     window.addEventListener('resize', this._resizeHandler)
@@ -223,8 +240,28 @@ export default class ToolboxToolbar extends Component {
       }
     })
   }
+  onDropdown(type, isOpen, list, selected, position) {
+    // unselect the prev button selected state if need
+    this._onUnselect(this.state.dropdown.type)
+
+    this.setState({
+      dropdown: {
+        type: isOpen ? type : null,
+        isOpen: isOpen,
+        list: list || [],
+        selected: selected || '',
+        position: position || {}
+      }
+    })
+  }
   _onUnselect(type) {
     switch (type) {
+      case 'font':
+        this.fontBtn.unSelect()
+        break;
+      case 'font-size':
+        this.fontSizeBtn.unSelect()
+        break;
       case 'color':
         this.colorBtn.unSelect()
         break;
@@ -238,14 +275,26 @@ export default class ToolboxToolbar extends Component {
   _onAfterExecCmd(type) {
     this._onUnselect(type)
 
-    this.setState({
-      palette: {
-        type: null,
-        isOpen: false,
-        selected: '',
-        position: {}
-      }
-    })
+    if (type === 'color' || type === 'highlight') {
+      this.setState({
+        palette: {
+          type: null,
+          isOpen: false,
+          selected: '',
+          position: {}
+        }
+      })
+    } else if (type === 'font' || type === 'font-size') {
+      this.setState({
+        dropdown: {
+          type: null,
+          isOpen: false,
+          list: [],
+          selected: '',
+          position: {}
+        }
+      })
+    }
   }
 
   render() {
@@ -261,6 +310,21 @@ export default class ToolboxToolbar extends Component {
           icon={RedoIcon}
           disabled={!this.props.undoStates.canRedo}
           onExecCommand={this.props.onExecCommand} />
+        <div className={styles.toolbarSeparator}></div>
+
+        <MenuButton
+          type="font"
+          list={['Arial', 'Consolas', 'Impact', 'Verdana']}
+          ref={el => this.fontBtn = el}
+          value={this._getCurrentAttrsValue('font', this.props.attrs)}
+          onDropdown={(isOpen, list, curValue, position) => this.onDropdown('font', isOpen, list, curValue, position)} />
+        <div className={styles.toolbarSeparator}></div>
+        <MenuButton
+          type="font-size"
+          list={['16', '18', '20', '24', '30', '40']}
+          ref={el => this.fontSizeBtn = el}
+          value={this._getCurrentAttrsValue('font-size', this.props.attrs)}
+          onDropdown={(isOpen, list, curValue, position) => this.onDropdown('font-size', isOpen, list, curValue, position)} />
         <div className={styles.toolbarSeparator}></div>
 
         {this._renderNormalButtonItems(this.items.formatItems)}
@@ -288,6 +352,11 @@ export default class ToolboxToolbar extends Component {
 
         {this._renderNormalButtonItems(this.items.entityItems)}
 
+        <DropdownList
+          {...this.state.dropdown}
+          ref={el => this.dropdown = el}
+          onExecCommand={this.props.onExecCommand}
+          onAfterExecCmd={type => this._onAfterExecCmd(type)} />
         <ColorPalette
           {...this.state.palette}
           ref={el => this.palette = el}

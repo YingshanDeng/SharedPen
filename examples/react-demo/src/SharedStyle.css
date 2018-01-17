@@ -27,14 +27,3 @@ button[data-disabled="true"] {
   opacity: 0.4;
   pointer-events: none;
 }
-
-/*.dropdown {
-  display: inline-block;
-  float: right;
-  width: 8px;
-  height: 28px;
-  opacity: 0.6;
-  background-image: url(./images/dropdown.svg);
-  background-repeat: no-repeat;
-  background-position: center;
-}*/

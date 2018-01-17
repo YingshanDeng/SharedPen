@@ -11,7 +11,7 @@ export default class ColorButton extends Component {
       let _rect = this.button.getBoundingClientRect()
       this.props.onPalette(true, this.props.value, {
         left: _rect.left,
-        top: _rect.top + _rect.height + 5 // margin: 5
+        top: _rect.top + _rect.height + 2 // margin: 2
       })
     }
   }
