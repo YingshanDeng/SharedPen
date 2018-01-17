@@ -1,8 +1,5 @@
 .colorPalette {
-  /*display: none;*/
-  display: block;
-  top: 100px;
-
+  display: none;
   position: absolute;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
   border: 1px solid rgba(0,0,0,.2);

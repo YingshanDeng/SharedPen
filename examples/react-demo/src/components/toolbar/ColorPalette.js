@@ -220,16 +220,28 @@ export default class ColorPalette extends Component {
       )
     })
   }
+
   _onClick(evt) {
     let _target = evt.target
     let _value = _target.getAttribute('value') || _target.parentNode.getAttribute('value')
 
-    console.log('--', _value)
+    this.props.onExecCommand(this.props.type, _value)
+    this.props.onAfterExecCmd(this.props.type)
   }
 
   render() {
+    let _style = (this.props.isOpen && this.props.position) ? {
+      display: "block",
+      left: `${this.props.position.left}px`,
+      top: `${this.props.position.top}px`
+    } : { display: "none" }
+
     return (
-      <div className={styles.colorPalette} onClick={e => this._onClick(e)}>
+      <div
+        ref={el => this.paletteWrapper = el}
+        style={_style}
+        className={styles.colorPalette}
+        onClick={e => this._onClick(e)}>
         <table>
           <tbody>
             <tr>{this._renderColorCells(this.coolColors)}</tr>

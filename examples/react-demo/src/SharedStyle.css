@@ -28,7 +28,7 @@ button[data-disabled="true"] {
   pointer-events: none;
 }
 
-.dropdown {
+/*.dropdown {
   display: inline-block;
   float: right;
   width: 8px;
@@ -37,4 +37,4 @@ button[data-disabled="true"] {
   background-image: url(./images/dropdown.svg);
   background-repeat: no-repeat;
   background-position: center;
-}
+}*/

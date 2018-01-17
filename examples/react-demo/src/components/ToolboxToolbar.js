@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import NormalButton from './toolbar/NormalButton'
+import ColorButton from './toolbar/ColorButton'
+import HighlightButton from './toolbar/HighlightButton'
 import ColorPalette from './toolbar/ColorPalette'
 
 import styles from './ToolboxToolbar.css'
@@ -99,7 +101,39 @@ export default class ToolboxToolbar extends Component {
         icon: ImageIcon
       }]
     }
+
+    //
+    this.state = {
+      // 色板
+      palette: {
+        type: null,
+        isOpen: false,
+        selected: '',
+        position: {}
+      }
+    }
   }
+
+  componentDidMount() {
+    this._clickHandler = (evt) => {
+      let _target = evt.target
+      if (!this.colorBtn.button.contains(_target) &&
+        !this.highlightBtn.button.contains(_target) &&
+        !this.palette.paletteWrapper.contains(_target)) {
+        this.onPalette(this.state.palette.type, false)
+      }
+    }
+    this._resizeHandler = () => {
+      this.onPalette(this.state.palette.type, false)
+    }
+    document.body.addEventListener('click', this._clickHandler)
+    window.addEventListener('resize', this._resizeHandler)
+  }
+  componentWillUnmount() {
+    document.body.removeEventListener('click', this._clickHandler)
+    window.removeEventListener('resize', this._resizeHandler)
+  }
+
   // 文本属性按键监听是否选中
   _monitorAttrsSelected(t, curAttrs) {
     if (!curAttrs) { return false }
@@ -176,6 +210,44 @@ export default class ToolboxToolbar extends Component {
     })
   }
 
+  onPalette(type, isOpen, selected, position) {
+    // unselect the prev button selected state if need
+    this._onUnselect(this.state.palette.type)
+
+    this.setState({
+      palette: {
+        type: isOpen ? type : null,
+        isOpen: isOpen,
+        selected: selected || "",
+        position: position || {}
+      }
+    })
+  }
+  _onUnselect(type) {
+    switch (type) {
+      case 'color':
+        this.colorBtn.unSelect()
+        break;
+      case 'highlight':
+        this.highlightBtn.unSelect()
+        break;
+      default:
+        break;
+    }
+  }
+  _onAfterExecCmd(type) {
+    this._onUnselect(type)
+
+    this.setState({
+      palette: {
+        type: null,
+        isOpen: false,
+        selected: '',
+        position: {}
+      }
+    })
+  }
+
   render() {
     return (
       <div className={styles.toolboxToolbar}>
@@ -194,6 +266,17 @@ export default class ToolboxToolbar extends Component {
         {this._renderNormalButtonItems(this.items.formatItems)}
         <div className={styles.toolbarSeparator}></div>
 
+        <ColorButton
+          ref={el => this.colorBtn = el}
+          value={this._getCurrentAttrsValue('color', this.props.attrs)}
+          onPalette={(isOpen, curValue, position) => this.onPalette('color', isOpen, curValue, position)} />
+        <div className={styles.toolbarSeparator}></div>
+        <HighlightButton
+          ref={el => this.highlightBtn = el}
+          value={this._getCurrentAttrsValue('highlight', this.props.attrs)}
+          onPalette={(isOpen, curValue, position) => this.onPalette('highlight', isOpen, curValue, position)} />
+        <div className={styles.toolbarSeparator}></div>
+
         {this._renderNormalButtonItems(this.items.alignItems)}
         <div className={styles.toolbarSeparator}></div>
 
@@ -205,7 +288,11 @@ export default class ToolboxToolbar extends Component {
 
         {this._renderNormalButtonItems(this.items.entityItems)}
 
-        <ColorPalette selected="rgb(67, 67, 67)" />
+        <ColorPalette
+          {...this.state.palette}
+          ref={el => this.palette = el}
+          onExecCommand={this.props.onExecCommand}
+          onAfterExecCmd={type => this._onAfterExecCmd(type)} />
       </div>
     )
   }
