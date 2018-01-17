@@ -52,6 +52,12 @@
         margin: 0 5px;
         border: 1px solid #f0f0f0;
       }
+      .user-list.excess .avatar-wrapper {
+        margin-right: -20px;
+      }
+      .user-list.excess .avatar-wrapper:last-of-type {
+        margin-right: 0px;
+      }
       .avatar {
         width: 36px;
         height: 36px;
@@ -117,9 +123,15 @@
       }
       connectedCallback () {
         super.connectedCallback()
+        this._userList = this.shadowRoot.querySelector('.user-list')
         setTimeout(() => {
           window.sharedPen.on('ready', () => {
             window.sharedPen.on('clientsChanged', (clients) => {
+              if (clients.length > (window.innerWidth - 200) / 50) {
+                this._userList.classList.add('excess')
+              } else {
+                this._userList.classList.remove('excess')
+              }
               this.set('clients', clients)
             })
           })
