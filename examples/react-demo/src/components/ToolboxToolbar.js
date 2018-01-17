@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import NormalButton from './toolbar/NormalButton'
+import ColorPalette from './toolbar/ColorPalette'
+
 import styles from './ToolboxToolbar.css'
 
 // icons
@@ -202,6 +204,8 @@ export default class ToolboxToolbar extends Component {
         <div className={styles.toolbarSeparator}></div>
 
         {this._renderNormalButtonItems(this.items.entityItems)}
+
+        <ColorPalette selected="rgb(67, 67, 67)" />
       </div>
     )
   }
