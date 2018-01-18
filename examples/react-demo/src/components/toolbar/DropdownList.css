@@ -1,0 +1,23 @@
+.dropdownList {
+  display: none;
+  position: absolute;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  border: 1px solid rgba(0,0,0,.2);
+  padding: 6px 0;
+  font-size: 13px;
+  z-index: 10;
+  background-color: #fff;
+  user-select: none;
+}
+.listItem {
+  cursor: pointer;
+  color: #333;
+  white-space: nowrap;
+  padding: 6px 44px 6px 16px;
+}
+.listItem:hover {
+  background-color: #f0f0f0;
+}
+.listItem[data-selected="true"] {
+  background-color: #e0e0e0;
+}

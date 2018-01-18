@@ -1,0 +1,19 @@
+.icon {
+  content: url(../../images/highlight.svg);
+  padding: 3px 2px;
+  margin-left: 4px;
+  transition: opacity 200ms linear;
+}
+.dropdown {
+  display: inline-block;
+  float: right;
+  width: 8px;
+  height: 28px;
+  opacity: 0.6;
+  background-image: url(../../images/dropdown.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  margin-left: 6px;
+  margin-right: 4px;
+  transform: scale(0.8);
+}

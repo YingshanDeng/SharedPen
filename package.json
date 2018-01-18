@@ -44,6 +44,7 @@
     "gulp-babel": "^7.0.0",
     "gulp-cached": "^1.1.1",
     "gulp-clean-css": "^3.9.0",
+    "gulp-gzip": "^1.4.1",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^3.0.0",
     "run-sequence": "^2.2.0",

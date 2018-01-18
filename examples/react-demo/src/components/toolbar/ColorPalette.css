@@ -1,0 +1,40 @@
+.colorPalette {
+  display: none;
+  position: absolute;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  border: 1px solid rgba(0,0,0,.2);
+  padding: 6px;
+  z-index: 10;
+  background-color: #fff;
+  user-select: none;
+}
+table:nth-of-type(1), table:nth-of-type(2) {
+  margin-bottom: 2px;
+}
+.colorCell {
+  border: 1px solid transparent;
+  cursor: pointer;
+  margin: 0;
+  position: relative;
+  user-select: none;
+  transition: border 200ms linear;
+}
+.colorCell:hover,
+.colorCell[data-selected="true"] {
+  border: 1px solid black;
+}
+.colorCell[data-selected="true"]:after {
+  content: '';
+  position: absolute;
+  top: 0px;
+  width: 16px;
+  height: 16px;
+  background-size: 13px 13px;
+  background-image: url(../../images/checkmark.png);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.colorBlock {
+  height: 16px;
+  width: 16px;
+}
