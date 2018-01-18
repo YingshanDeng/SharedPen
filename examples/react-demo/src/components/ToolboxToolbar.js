@@ -32,6 +32,9 @@ import UnindentIcon from '../images/unindent.svg'
 import LinkIcon from '../images/link.svg'
 import ImageIcon from '../images/image.svg'
 
+import FormatIcon from '../images/format.svg'
+import ClearFormatIcon from '../images/clear-format.svg'
+
 export default class ToolboxToolbar extends Component {
   constructor(props) {
     super(props)
@@ -310,6 +313,10 @@ export default class ToolboxToolbar extends Component {
           icon={RedoIcon}
           disabled={!this.props.undoStates.canRedo}
           onExecCommand={this.props.onExecCommand} />
+        <NormalButton
+          type="format"
+          icon={FormatIcon}
+          onExecCommand={this.props.onExecCommand} />
         <div className={styles.toolbarSeparator}></div>
 
         <MenuButton
@@ -351,6 +358,12 @@ export default class ToolboxToolbar extends Component {
         <div className={styles.toolbarSeparator}></div>
 
         {this._renderNormalButtonItems(this.items.entityItems)}
+        <div className={styles.toolbarSeparator}></div>
+
+        <NormalButton
+          type="clear-format"
+          icon={ClearFormatIcon}
+          onExecCommand={this.props.onExecCommand} />
 
         <DropdownList
           {...this.state.dropdown}

@@ -73,8 +73,8 @@
 .invitation {
   width: 20px;
   height: 20px;
-  background-size: 10px 10px;
-  background-image: url(../images/add.svg);
+  background-size: 16px 12px;
+  background-image: url(../images/addclient.svg);
   background-repeat: no-repeat;
   background-position: center;
   margin: 0 10px;

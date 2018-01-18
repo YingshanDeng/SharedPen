@@ -32,15 +32,12 @@ class App extends Component {
   }
   _onReady() {
     this.sharedPen.on('clientsChanged', (clients) => {
-      console.log('---clients: ', clients)
       this.setState({clients})
     })
     this.sharedPen.on('realtimeTextAttrsChanged', (attrs) => {
-      console.log('---', attrs)
       this.setState({attrs})
     })
     this.sharedPen.on('undoStatesChanged', (undoStates) => {
-      console.log('===', undoStates)
       this.setState({undoStates})
     })
   }
@@ -75,16 +72,27 @@ class App extends Component {
 
       case 'link': alert('TODO: Insert Link'); break
       case 'image': alert('TODO: Insert Image'); break
+
+      case 'format': alert('TODO: Format'); break
+      case 'clear-format': alert('TODO: Clear Format'); break
       default: break
     }
+  }
+  _onClickExplore(e) {
+    console.log('--TODO Explore--')
   }
   render() {
     return (
       <div className={styles.app}>
         <Toolbox {...this.state} onExecCommand={(c, v) => this.onExecCommand(c, v)}/>
         <Editor textareaRef={el => this.textarea = el} />
+
+        <button className={styles.explore} onClick={e => this._onClickExplore(e)}>
+          <div className={styles.exploreIcon}></div>
+          <span className={styles.exploreInfo}>Explore</span>
+        </button>
       </div>
-    );
+    )
   }
 }
 
