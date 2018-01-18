@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styles from './MenuButton.css'
+import tooltipStyles from  './Tooltip.css'
 
 export default class MenuButton extends Component {
   _onClick(evt) {
@@ -23,8 +24,9 @@ export default class MenuButton extends Component {
   render() {
     return (
       <button
+        data-tooltip={this.props.tooltip}
         ref={el => this.button = el}
-        className={styles.menuButton}
+        className={`${styles.menuButton} ${tooltipStyles.tooltip}`}
         onClick={e => this._onClick(e)}>
         <div
           className={styles.caption}

@@ -42,19 +42,19 @@ export default class ToolboxToolbar extends Component {
     this.items = {
       formatItems: [{
         type: 'bold',
-        tooltip: '',
+        tooltip: 'Bold (⌘B)',
         icon: BoldIcon
       }, {
         type: 'italic',
-        tooltip: '',
+        tooltip: 'Italic (⌘I)',
         icon: ItalicIcon
       }, {
         type: 'underline',
-        tooltip: '',
+        tooltip: 'Underline (⌘U)',
         icon: UnderlineIcon
       }, {
         type: 'strike',
-        tooltip: '',
+        tooltip: 'Strike (⌘+Shift+X)',
         icon: StrikeIcon
       }],
       alignItems: [{
@@ -76,33 +76,33 @@ export default class ToolboxToolbar extends Component {
       }],
       listItems: [{
         type: 'ordered-list',
-        tooltip: '',
+        tooltip: 'Numbered list (⌘+Shift+7)',
         icon: OrderedListIcon
       }, {
         type: 'unordered-list',
-        tooltip: '',
+        tooltip: 'Bulleted list (⌘+Shift+8)',
         icon: UnorderedListIcon
       }, {
         type: 'todo-list',
-        tooltip: '',
+        tooltip: 'Todo list (⌘+Shift+9)',
         icon: TodoListIcon
       }],
       indentItems: [{
         type: 'indent',
-        tooltip: 'Indent (⌘[)',
+        tooltip: 'Decrease indent (⌘[)',
         icon: IndentIcon
       }, {
         type: 'unindent',
-        tooltip: 'Unindent (⌘[)',
+        tooltip: 'Decrease indent (⌘[)',
         icon: UnindentIcon
       }],
       entityItems: [{
         type: 'link',
-        tooltip: '',
+        tooltip: 'Insert link (⌘K)',
         icon: LinkIcon
       }, {
         type: 'image',
-        tooltip: '',
+        tooltip: 'Insert image',
         icon: ImageIcon
       }]
     }
@@ -306,21 +306,25 @@ export default class ToolboxToolbar extends Component {
         <NormalButton
           type="undo"
           icon={UndoIcon}
+          tooltip="Undo (⌘Z)"
           disabled={!this.props.undoStates.canUndo}
           onExecCommand={this.props.onExecCommand} />
         <NormalButton
           type="redo"
           icon={RedoIcon}
+          tooltip="Rndo (⌘Y)"
           disabled={!this.props.undoStates.canRedo}
           onExecCommand={this.props.onExecCommand} />
         <NormalButton
           type="format"
           icon={FormatIcon}
+          tooltip="Paint format"
           onExecCommand={this.props.onExecCommand} />
         <div className={styles.toolbarSeparator}></div>
 
         <MenuButton
           type="font"
+          tooltip="Font"
           list={['Arial', 'Consolas', 'Impact', 'Verdana']}
           ref={el => this.fontBtn = el}
           value={this._getCurrentAttrsValue('font', this.props.attrs)}
@@ -328,6 +332,7 @@ export default class ToolboxToolbar extends Component {
         <div className={styles.toolbarSeparator}></div>
         <MenuButton
           type="font-size"
+          tooltip="Font size"
           list={['16', '18', '20', '24', '30', '40']}
           ref={el => this.fontSizeBtn = el}
           value={this._getCurrentAttrsValue('font-size', this.props.attrs)}
@@ -338,11 +343,13 @@ export default class ToolboxToolbar extends Component {
         <div className={styles.toolbarSeparator}></div>
 
         <ColorButton
+          tooltip="Text Color"
           ref={el => this.colorBtn = el}
           value={this._getCurrentAttrsValue('color', this.props.attrs)}
           onPalette={(isOpen, curValue, position) => this.onPalette('color', isOpen, curValue, position)} />
         <div className={styles.toolbarSeparator}></div>
         <HighlightButton
+          tooltip="Text Highlight Color"
           ref={el => this.highlightBtn = el}
           value={this._getCurrentAttrsValue('highlight', this.props.attrs)}
           onPalette={(isOpen, curValue, position) => this.onPalette('highlight', isOpen, curValue, position)} />
@@ -362,6 +369,7 @@ export default class ToolboxToolbar extends Component {
 
         <NormalButton
           type="clear-format"
+          tooltip="Clear formatting (⌘\)"
           icon={ClearFormatIcon}
           onExecCommand={this.props.onExecCommand} />
 
