@@ -53,6 +53,13 @@
   border: 1px solid #f0f0f0;
 }
 
+.userList.excess .avatarWrapper{
+  margin-right: -20px;
+}
+.userList.excess .avatarWrapper:last-of-type {
+  margin-right: 0px;
+}
+
 .avatar {
   width: 36px;
   height: 36px;
