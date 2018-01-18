@@ -14,6 +14,7 @@ var del = require('del')
 var browserSync = require('browser-sync')
 var gzip = require('gulp-gzip')
 
+/********************* serve task *********************/
 // serve sharedpen source files and compile them
 gulp.task('serve', ['clean:build'], () => {
   runSequence(['build:scripts', 'build:css'])
@@ -44,10 +45,13 @@ gulp.task('build:css', () => {
   return gulp.src('lib/*.css')
     .pipe(gulp.dest('build/'))
 })
-
 // clean build dir
 gulp.task('clean:build', () => {
   del.sync('build')
+})
+/********************* build task *********************/
+gulp.task('build', (cb) => {
+  runSequence('clean:build', ['build:scripts', 'build:css'], cb)
 })
 
 // bundle js/css
@@ -92,11 +96,9 @@ gulp.task('gzip', () => {
     .pipe(gulp.dest('dist/'))
 })
 
-gulp.task('default', ['clean:dist'], (cb) => {
+/********************* bundle task *********************/
+gulp.task('bundle', ['clean:dist'], (cb) => {
   runSequence(['bundle:scripts', 'bundle:css'], 'gzip', cb)
 })
 
-gulp.task('copylib', () => {
-  return gulp.src('dist/sharedpen.min.js')
-    .pipe(gulp.dest('examples/polymer/src/lib'))
-})
+gulp.task('default', ['bundle'])
