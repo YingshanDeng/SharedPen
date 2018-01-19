@@ -82,6 +82,9 @@ gulp.task('bundle:scripts', () => {
 gulp.task('bundle:css', () => {
   return gulp.src('lib/SharedPen.css')
     .pipe(cleanCSS())
+    .pipe(rename({
+      basename: 'sharedpen'
+    }))
     .pipe(gulp.dest('dist/'))
 })
 

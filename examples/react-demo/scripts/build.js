@@ -49,6 +49,10 @@ measureFileSizesBeforeBuild(paths.appBuild)
     fs.emptyDirSync(paths.appBuild);
     // Merge with the public folder
     copyPublicFolder();
+
+    // TODO...
+    copySharedPen();
+
     // Start the webpack build
     return build(previousFileSizes);
   })
@@ -147,4 +151,16 @@ function copyPublicFolder() {
     dereference: true,
     filter: file => file !== paths.appHtml,
   });
+}
+
+function copySharedPen() {
+  var dest = 'dist'
+  var srcDir = path.resolve(__dirname, '../../..', dest)
+  var targetDir = path.resolve(paths.appBuild, dest)
+  var regex = new RegExp(/sharedpen(\.min)?\.(css|js)(\.gz)?/)
+
+  fs.copySync(srcDir, targetDir, {
+    dereference: true,
+    filter: src => regex.test(src) || (src == srcDir)
+  })
 }
