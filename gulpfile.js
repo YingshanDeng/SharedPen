@@ -14,12 +14,12 @@ var del = require('del')
 var browserSync = require('browser-sync')
 var gzip = require('gulp-gzip')
 
-/********************* serve task *********************/
+/** ******************* serve task *********************/
 // serve sharedpen source files and compile them
 gulp.task('serve', ['clean:build'], () => {
   runSequence(['build:scripts', 'build:css'])
   browserSync({
-    port: 3000,
+    port: 5000,
     logPrefix: 'SharedPen',
     server: {
       baseDir: './build'
@@ -49,7 +49,7 @@ gulp.task('build:css', () => {
 gulp.task('clean:build', () => {
   del.sync('build')
 })
-/********************* build task *********************/
+/** ******************* build task *********************/
 gulp.task('build', (cb) => {
   runSequence('clean:build', ['build:scripts', 'build:css'], cb)
 })
@@ -96,7 +96,7 @@ gulp.task('gzip', () => {
     .pipe(gulp.dest('dist/'))
 })
 
-/********************* bundle task *********************/
+/** ******************* bundle task *********************/
 gulp.task('bundle', ['clean:dist'], (cb) => {
   runSequence(['bundle:scripts', 'bundle:css'], 'gzip', cb)
 })

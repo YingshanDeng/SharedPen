@@ -4,9 +4,8 @@ A real time collaborative editor using CodeMirror and ot.js
 ## Development
 ```
 npm install
-cd examples/polymer
+cd examples/react-demo
 npm install
-bower install
 ```
 
 ### setup sharedpen source files
@@ -17,7 +16,7 @@ gulp serve
 
 - watch sharedpen source files' change
 - compile them to `build` dir
-- serve them (port: 3000)
+- serve them (port: 5000)
 
 ### setup sharedpen server(socket.io)
 ```
@@ -32,17 +31,17 @@ Open in Chrome, debug the SharedPen server side code:
 chrome://inspect/#devices
 ```
 
-### setup polymer-demo static files
+### setup react-demo
 ```
-# path: example/polymer
-polymer serve --port 5000
+cd examples/react-demo
+yarn start
 ```
 
-- serve demo's static files(port: 5000)
+- serve demo's static files(port: 3000)
 
 Open in Browser, debug the SharedPen client side code:
 ```
-http://127.0.0.1:5000
+http://localhost:3000/
 ```
 
 ## Bundle
@@ -51,14 +50,12 @@ http://127.0.0.1:5000
 npm run bundle
 ```
 
-### bundle SharedPen Polymer Demo
+### bundle SharedPen React Demo
 ```
-npm run bundle-polymer-demo
-```
+TODO ...
 
-You should install polymer-cli first:
-```
-npm install -g polymer-cli
+cd examples/react-demo
+yarn build
 ```
 
 ## License

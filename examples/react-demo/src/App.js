@@ -80,6 +80,10 @@ class App extends Component {
   }
   _onClickExplore(e) {
     console.log('--TODO Explore--')
+    alert(`SharedPen 富文本协同编辑器现阶段仍在开发中，发现BUG或者对此项目感兴趣的朋友欢迎联系我一起交流 🤝
+      QQ：1012520397
+      Mail: yingshandeng@gmail.com
+      GitHub: https://github.com/yingshandeng/Sharedpen`)
   }
   render() {
     return (

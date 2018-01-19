@@ -4,10 +4,10 @@
   "description": "A real time collaborative editor using CodeMirror and ot.js",
   "main": "index.js",
   "scripts": {
-    "fix": "standard --fix lib/*.js server.js gulpfile.js",
-    "test": "standard lib/*.js server.js gulpfile.js",
-    "bundle": "gulp",
-    "bundle-polymer-demo": "gulp && gulp copylib && cd examples/polymer && npm run bundle"
+    "fix": "standard --fix lib/*.js examples/server.js gulpfile.js",
+    "test": "standard lib/*.js examples/server.js gulpfile.js",
+    "build": "gulp build",
+    "bundle": "gulp"
   },
   "repository": {
     "type": "git",
