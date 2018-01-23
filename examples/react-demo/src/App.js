@@ -29,6 +29,8 @@ class App extends Component {
     // initial SharedPen
     this.sharedPen = new window.SharedPen(this.textarea, url)
     this.sharedPen.on('ready', this._onReady.bind(this))
+    // just for debug
+    window.sharedPen = this.sharedPen
   }
   _onReady() {
     this.sharedPen.on('clientsChanged', (clients) => {
