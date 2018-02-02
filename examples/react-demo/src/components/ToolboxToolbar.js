@@ -88,13 +88,13 @@ export default class ToolboxToolbar extends Component {
         icon: TodoListIcon
       }],
       indentItems: [{
-        type: 'indent',
-        tooltip: 'Decrease indent (⌘[)',
-        icon: IndentIcon
-      }, {
         type: 'unindent',
         tooltip: 'Decrease indent (⌘[)',
         icon: UnindentIcon
+      }, {
+        type: 'indent',
+        tooltip: 'Increase indent (⌘])',
+        icon: IndentIcon
       }],
       entityItems: [{
         type: 'link',

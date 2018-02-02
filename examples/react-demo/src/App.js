@@ -75,8 +75,8 @@ class App extends Component {
       case 'link': alert('TODO: Insert Link'); break
       case 'image': alert('TODO: Insert Image'); break
 
-      case 'format': alert('TODO: Format'); break
-      case 'clear-format': alert('TODO: Clear Format'); break
+      case 'format': this.sharedPen.format(); break
+      case 'clear-format': this.sharedPen.clearFormat(); break
       default: break
     }
   }
