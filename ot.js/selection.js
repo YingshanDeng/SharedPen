@@ -78,6 +78,7 @@ ot.Selection = (function (global) {
   };
 
   Selection.prototype.equals = function (other) {
+    // this.position ???
     if (this.position !== other.position) { return false; }
     if (this.ranges.length !== other.ranges.length) { return false; }
     // FIXME: Sort ranges before comparing them?

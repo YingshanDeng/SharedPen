@@ -1,0 +1,131 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<dom-module id="toolbar-dropdown-list">
+  <template>
+    <style>
+      :host {
+        display: none;
+        position: absolute;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        border: 1px solid rgba(0,0,0,.2);
+        padding: 6px 0;
+        font-size: 13px;
+        z-index: 10;
+        background-color: #fff;
+        user-select: none;
+      }
+      .list-item {
+        cursor: pointer;
+        color: #333;
+        white-space: nowrap;
+        padding: 6px 44px 6px 16px;
+      }
+      .list-item:hover,
+      .list-item[selected] {
+        background: #f0f0f0;
+      }
+    </style>
+    <template is="dom-repeat" items="[[items]]">
+      <div
+        class="list-item"
+        style$="[[_fontStyle(type,item)]]"
+        on-tap="_onTap"
+        selected$="[[_handleListItemSelected(item)]]">[[item]]</div>
+    </template>
+  </template>
+  <script>
+  class ToolbarDropdownList extends Polymer.GestureEventListeners(Polymer.Element) {
+    static get is () {
+      return 'toolbar-dropdown-list'
+    }
+    static get properties () {
+      return {
+        type: String,
+        selected: String,
+        items: Array
+      }
+    }
+    _fontStyle (type, item) {
+      if (type === 'font') {
+        return `font-family: ${item}`
+      }
+      return `font-family: Arial`
+    }
+    connectedCallback() {
+      super.connectedCallback()
+      this._opening = false
+      this.windowClickHandler = (evt) => {
+        let path = evt.composedPath()
+        let inside = false
+        for (var i = 0; i < path.length - 1; i++) {
+          var ele = path[i]
+          if (ele instanceof Node && ele.tagName &&
+            (ele.tagName.toLowerCase() === 'toolbar-menu-button' || this.shadowRoot.contains(ele))) {
+            inside = true
+            break
+          }
+        }
+        // 如果点击不在 menu-button 或者 dropdown-list，并且 dropdown-list 处于 open 状态
+        // 那么关闭 dropdown-list
+        if (!inside && this._opening) {
+          this.closeDropdownList()
+        }
+      }
+      window.addEventListener('click', this.windowClickHandler)
+    }
+    disconnectedCallback () {
+      super.disconnectedCallback()
+      window.removeEventListener('click', this.windowClickHandler)
+    }
+
+    _handleListItemSelected(item) {
+      return this.selected+'' === item+''
+    }
+    _onTap (evt) {
+      let selected = evt.model.item
+      this.set('selected', selected)
+
+      this.dispatchEvent(new CustomEvent('toolbar-dropdown-select', {
+        detail: {
+          type: this.type,
+          selected: this.selected
+        },
+        bubbles: true,
+        composed: true
+      }))
+      this.closeDropdownList()
+    }
+    _notifyRelatedClose (type) {
+      this.dispatchEvent(new CustomEvent('toolbar-dropdown-close', {
+        detail: {
+          type: type
+        },
+        bubbles: true,
+        composed: true
+      }))
+    }
+    openDropdownList(type, items, selected, position) {
+      // notify the previos menu button
+      this.type && this.type.length && this._notifyRelatedClose(this.type)
+
+      this.set('type', type)
+      this.set('selected', selected)
+      this.set('items', items)
+
+      this.style.display = 'block'
+      this.style.left = `${position.left}px`
+      this.style.top = `${position.top}px`
+      this._opening = true
+    }
+    closeDropdownList () {
+      this._notifyRelatedClose(this.type)
+
+      this.style.display = 'none';
+      this.set('type', '')
+      this.set('selected', '')
+      this.set('items', [])
+      this._opening = false
+    }
+  }
+  window.customElements.define(ToolbarDropdownList.is, ToolbarDropdownList)
+  </script>
+</dom-module>

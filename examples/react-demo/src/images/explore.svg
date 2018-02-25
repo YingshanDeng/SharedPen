@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="16px" viewBox="0 0 14 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="material_common_sprite39" transform="translate(-38.000000, -612.000000)" fill="#000000">
+            <g id="Group" transform="translate(38.000000, 612.000000)">
+                <path d="M1.00684547,0 C0.450780073,0 -2.08596201e-15,0.447449351 -2.08596201e-15,1.0068708 C-2.08596201e-15,1.0068708 -2.08596201e-15,0.795555556 -2.08596201e-15,1.77777778 L-2.08596201e-15,12.4444444 C-2.08596201e-15,13.4266667 -1.20059318e-09,12.9909959 -1.20059318e-09,12.9909959 C-6.73340933e-09,13.5482535 0.443716635,14 0.999807483,14 L5,14 L7,16 L9,14 L12.1307373,14 L12.9927192,14 C13.549025,14 14,13.5505095 14,12.9998043 L14,1.77777778 C14,0.795555556 14,1.0068708 14,1.0068708 C14,0.45079141 13.5500512,0 12.9931545,0 L1.00684547,0 Z M7,12 L5.796875,8.375 L2.625,7 L5.796875,5.625 L7,2 L8.203125,5.625 L11.375,7 L8.203125,8.375 L7,12 Z" id="Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

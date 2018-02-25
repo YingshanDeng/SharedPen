@@ -1,0 +1,69 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../styles/codemirror-style.html">
+<link rel="import" href="../styles/sharedpen-style.html">
+
+<dom-module id="sharedpen-editor">
+  <template>
+    <style include="codemirror-style"></style>
+    <style include="sharedpen-style"></style>
+
+    <style>
+      :host {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+                justify-content: center;
+        width: 100%;
+        height: calc(100% - 97px);
+        background: #eee;
+        overflow: scroll;
+      }
+      .codemirror-container {
+        position: relative;
+      }
+      .CodeMirror {
+        width: 613px;
+        height: auto;
+        min-height: 1027px;
+      }
+      .CodeMirror-scroll {
+        height: auto;
+        overflow-y: hidden;
+        overflow-x: auto;
+        margin-bottom: 0;
+      }
+      .sharedpen-wrapper {
+        box-shadow: 0 0 0 0.75pt #d1d1d1, 0 0 3pt 0.75pt #ccc;
+        background: #fff;
+        margin: 6pt;
+        padding: 96px;
+        padding-bottom: 66px;
+      }
+
+    </style>
+    <div class="codemirror-container">
+      <textarea id="note"></textarea>
+    </div>
+  </template>
+  <script>
+    class SharedPenEditor extends Polymer.Element {
+      static get is () {
+        return 'sharedpen-editor'
+      }
+      ready () {
+        super.ready()
+        // HACK: ShredPen dynamic style add place
+        window.SharedPenRoot = this.shadowRoot
+        // init SharedPen
+        this.sharedPen = new SharedPen(this.$.note, `http://${window.location.hostname}:4000`, this.shadowRoot)
+        window.sharedPen = this.sharedPen
+      }
+      connectedCallback () {
+        super.connectedCallback()
+      }
+    }
+    window.customElements.define(SharedPenEditor.is, SharedPenEditor)
+  </script>
+</dom-module>

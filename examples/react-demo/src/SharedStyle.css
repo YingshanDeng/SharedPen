@@ -1,0 +1,30 @@
+button {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border: none;
+  outline: none;
+
+  width: auto;
+  height: 28px;
+
+  padding: 0;
+  border-radius: 2px;
+  background-color: #fff;
+  cursor: pointer;
+  transition: background-color 200ms linear;
+}
+button:hover {
+  background-color: #f0f0f0;
+}
+button:active,
+button[data-selected="true"] {
+  background-color: #e0e0e0;
+}
+
+button[data-disabled="true"] {
+  opacity: 0.4;
+  pointer-events: none;
+}

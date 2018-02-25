@@ -1,0 +1,52 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="toolbar-shared-style.html">
+
+<dom-module id="toolbar-normal-button">
+  <template>
+    <style include="toolbar-shared-style">
+      :host {
+        display: block;
+        margin: 0 3px;
+      }
+      :host([disabled]) {
+        opacity: 0.4;
+        pointer-events: none;
+      }
+      button {
+        width: 28px;
+      }
+      button .icon {
+        opacity: 0.6;
+        transition: opacity 200ms linear;
+      }
+      button:hover .icon,
+      :host([selected]) .icon {
+        opacity: 1;
+      }
+    </style>
+    <button on-tap="_onTap">
+      <div class="icon" style$="content: url(src/images/[[type]].svg)"></div>
+    </button>
+  </template>
+  <script>
+    class ToolbarNormalButton extends Polymer.GestureEventListeners(Polymer.Element) {
+      static get is () {
+        return 'toolbar-normal-button'
+      }
+      static get properties () {
+        return {
+          type: String,
+          tooltip: String
+        }
+      }
+      _onTap (evt) {
+        this.dispatchEvent(new CustomEvent('toolbar-button-tap', {
+          detail: { type: this.type },
+          bubbles: true,
+          composed: true
+        }))
+      }
+    }
+    window.customElements.define(ToolbarNormalButton.is, ToolbarNormalButton)
+  </script>
+</dom-module>

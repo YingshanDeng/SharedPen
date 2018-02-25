@@ -1,0 +1,19 @@
+{
+  "entrypoint": "index.html",
+  "shell": "src/sharedpen-app.html",
+  "extraDependencies": [
+    "manifest.json",
+    "bower_components/webcomponentsjs/*.js",
+    "node_modules/codemirror/lib/codemirror.js",
+    "node_modules/socket.io-client/dist/socket.io.js"
+  ],
+  "builds": [
+    { "preset": "es5-bundled" },
+    { "preset": "es6-unbundled" }
+  ],
+  "lint": {
+    "rules": [
+      "polymer-2"
+    ]
+  }
+}

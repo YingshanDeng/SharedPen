@@ -1,0 +1,79 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="toolbar-shared-style.html">
+
+<dom-module id="toolbar-highlight-button">
+  <template>
+    <style include="toolbar-shared-style">
+      :host {
+        display: block;
+      }
+      button {
+        width: 40px;
+      }
+      .icon {
+        content: url(../../images/highlight.svg);
+        padding: 3px 2px;
+        margin-left: 4px;
+        transition: opacity 200ms linear;
+      }
+      .dropdown {
+        margin-left: 6px;
+        margin-right: 4px;
+        transform: scale(0.8);
+      }
+    </style>
+    <button id="button" on-tap="_onTap">
+      <div class="icon" style$="background-color: [[selected]]"></div>
+      <div class="dropdown"></div>
+    </button>
+  </template>
+  <script>
+    class ToolbarHighlightButton extends Polymer.GestureEventListeners(Polymer.Element) {
+      static get is () {
+        return 'toolbar-highlight-button'
+      }
+      static get properties () {
+        return {
+          selected: {
+            type: String,
+            value: "rgb(255, 255, 255)"
+          }
+        }
+      }
+      _onTap (evt) {
+        let btn = this.$.button
+        if (btn.hasAttribute('selected')) {
+          btn.removeAttribute('selected')
+          this.dispatchEvent(new CustomEvent('toolbar-button-tap', {
+            detail: {
+              type: 'highlight',
+              isOpen: false
+            },
+            bubbles: true,
+            composed: true
+          }))
+        } else {
+          btn.setAttribute('selected', '')
+          let rect = this.getBoundingClientRect()
+          this.dispatchEvent(new CustomEvent('toolbar-button-tap', {
+            detail: {
+              type: 'highlight',
+              isOpen: true,
+              position: {
+                left: rect.left,
+                top: rect.top + rect.height + 2 // margin: 2
+              },
+              selected: this.selected
+            },
+            bubbles: true,
+            composed: true
+          }))
+        }
+      }
+      relatedPaletteClose () {
+        this.$.button.removeAttribute('selected')
+      }
+    }
+    window.customElements.define(ToolbarHighlightButton.is, ToolbarHighlightButton)
+  </script>
+</dom-module>

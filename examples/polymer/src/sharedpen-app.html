@@ -1,0 +1,25 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="sharedpen-toolbox/sharedpen-toolbox.html">
+<link rel="import" href="sharedpen-editor/sharedpen-editor.html">
+
+<dom-module id="sharedpen-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+    <sharedpen-toolbox></sharedpen-toolbox>
+    <sharedpen-editor></sharedpen-editor>
+  </template>
+
+  <script>
+    class SharedPenApp extends Polymer.Element {
+      static get is() { return 'sharedpen-app'; }
+    }
+
+    window.customElements.define(SharedPenApp.is, SharedPenApp);
+  </script>
+</dom-module>

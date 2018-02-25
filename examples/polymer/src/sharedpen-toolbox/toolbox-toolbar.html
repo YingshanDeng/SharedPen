@@ -1,0 +1,374 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="toolbar/toolbar-normal-button.html">
+<link rel="import" href="toolbar/toolbar-menu-button.html">
+<link rel="import" href="toolbar/toolbar-dropdown-list.html">
+<link rel="import" href="toolbar/toolbar-color-button.html">
+<link rel="import" href="toolbar/toolbar-highlight-button.html">
+<link rel="import" href="toolbar/toolbar-color-palette.html">
+
+<dom-module id="toolbox-toolbar">
+  <template>
+    <style>
+      :host {
+        display: block;
+        width: 100%;
+        height: 35px;
+        border-top: 1px solid #e0e0e0;
+        border-bottom: 1px solid #e0e0e0;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .toolbar-separator {
+        border-left: 1px solid #e0e0e0;
+        margin: 0 3px;
+        width: 0;
+        height: 35px;
+        user-select: none;
+      }
+      toolbar-menu-button#font {
+        --caption-with: 70px;
+      }
+      toolbar-menu-button#font-size {
+        --caption-with: 45px;
+      }
+    </style>
+    <!-- undo/redo -->
+    <template is="dom-repeat" items="[[undoItems]]">
+      <toolbar-normal-button
+        type="[[item.type]]"
+        tooltip="[[item.tooltip]]"
+        disabled$="[[_monitorUndoRedoDisabled(item.type,canUndoRedoState)]]"></toolbar-normal-button>
+    </template>
+    <div class="toolbar-separator"></div>
+    <!-- font/font-size -->
+    <template is="dom-repeat" items="[[fontItems]]">
+      <toolbar-menu-button
+        id$="[[item.type]]"
+        type="[[item.type]]"
+        tooltip="[[item.tooltip]]"
+        selected="[[_getCurrentAttrsValue(item.type,currentStates)]]"
+        items="[[item.items]]"></toolbar-menu-button>
+      <div class="toolbar-separator"></div>
+    </template>
+    <!-- bold/italic/underline/strike -->
+    <template is="dom-repeat" items="[[formatItems]]">
+      <toolbar-normal-button
+      type="[[item.type]]"
+      tooltip="[[item.tooltip]]"
+      selected$="[[_monitorAttrsSelected(item.type,currentStates)]]"></toolbar-normal-button>
+    </template>
+    <div class="toolbar-separator"></div>
+    <!-- color/highlight color -->
+    <toolbar-color-button id="color" selected="[[_getCurrentAttrsValue('color',currentStates)]]"></toolbar-color-button>
+    <div class="toolbar-separator"></div>
+    <toolbar-highlight-button id="highlight" selected="[[_getCurrentAttrsValue('highlight',currentStates)]]"></toolbar-highlight-button>
+    <div class="toolbar-separator"></div>
+    <!-- align(left, center, right, justify) -->
+    <template is="dom-repeat" items="[[alignItems]]">
+      <toolbar-normal-button
+        type="[[item.type]]"
+        tooltip="[[item.tooltip]]"
+        selected$="[[_monitorAttrsSelected(item.type,currentStates)]]"></toolbar-normal-button>
+    </template>
+    <div class="toolbar-separator"></div>
+    <!-- list(order, unorder, todo) -->
+    <template is="dom-repeat" items="[[listItems]]">
+      <toolbar-normal-button
+        type="[[item.type]]"
+        tooltip="[[item.tooltip]]"
+        selected$="[[_monitorAttrsSelected(item.type,currentStates)]]"></toolbar-normal-button>
+    </template>
+    <div class="toolbar-separator"></div>
+    <!-- indent/unindent -->
+    <template is="dom-repeat" items="[[indentItems]]">
+      <toolbar-normal-button
+        type="[[item.type]]"
+        tooltip="[[item.tooltip]]"></toolbar-normal-button>
+    </template>
+    <div class="toolbar-separator"></div>
+    <!-- link/image -->
+    <toolbar-normal-button type="link" tooltip="Insert link"></toolbar-normal-button>
+    <toolbar-normal-button type="image" tooltip="Insert image"></toolbar-normal-button>
+
+    <toolbar-dropdown-list id="dropdown"></toolbar-dropdown-list>
+    <toolbar-color-palette id="colorPalette"></toolbar-color-palette>
+  </template>
+  <script>
+    class ToolboxToolbar extends Polymer.Element {
+      static get is () {
+        return 'toolbox-toolbar'
+      }
+      static get properties () {
+        return {
+          undoItems: {
+            type: Array,
+            value: [{
+              type: 'undo',
+              tooltip: 'Undo (⌘Z)'
+            }, {
+              type: 'redo',
+              tooltip: 'Rndo (⌘Y)'
+            }]
+          },
+          formatItems: {
+            type: Array,
+            value: [{
+              type: 'bold',
+              tooltip: ''
+            }, {
+              type: 'italic',
+              tooltip: ''
+            }, {
+              type: 'underline',
+              tooltip: ''
+            }, {
+              type: 'strike',
+              tooltip: ''
+            }]
+          },
+          fontItems: {
+            type: Array,
+            value: [{
+              type: 'font',
+              tooltip: 'Font',
+              items: ['Arial', 'Consolas', 'Impact', 'Verdana']
+            }, {
+              type: 'font-size',
+              tooltip: 'Font size',
+              items: ['16', '18', '20', '24', '30', '40']
+            }]
+          },
+          alignItems: {
+            type: Array,
+            value: [{
+              type: 'align-left',
+              tooltip: 'Left align (⌘+Shift+L)'
+            }, {
+              type: 'align-center',
+              tooltip: 'Center align (⌘+Shift+E)'
+            }, {
+              type: 'align-right',
+              tooltip: 'Right align (⌘+Shift+R)'
+            }, {
+              type: 'align-justify',
+              tooltip: 'Justify (⌘+Shift+J)'
+            }]
+          },
+          listItems: {
+            type: Array,
+            value: [{
+              type: 'ordered-list',
+              tooltip: ''
+            }, {
+              type: 'unordered-list',
+              tooltip: ''
+            }, {
+              type: 'todo-list',
+              tooltip: ''
+            }]
+          },
+          indentItems: {
+            type: Array,
+            value: [{
+              type: 'indent',
+              tooltip: 'Indent (⌘[)'
+            }, {
+              type: 'unindent',
+              tooltip: 'Unindent (⌘[)'
+            }]
+          },
+
+          currentStates: Object,
+          canUndoRedoState: Object
+        }
+      }
+      connectedCallback () {
+        super.connectedCallback()
+        this._toolbarBtnTapHandler = ({ detail }) => {
+          let type = detail.type
+          if (type === 'font' || type === 'font-size') {
+            let isOpen = detail.isOpen
+            if (isOpen) {
+              let items = detail.items
+              let position = detail.position
+              let selected = detail.selected
+              this.$.dropdown.openDropdownList(type, items, selected, position)
+            } else {
+              this.$.dropdown.closeDropdownList()
+            }
+          } else if (type === "color" || type === 'highlight') {
+            let isOpen = detail.isOpen
+            if (isOpen) {
+              let selected = detail.selected
+              let position = detail.position
+              this.$.colorPalette.openColorPalette(type, selected, position)
+            } else {
+              this.$.colorPalette.closeColorPalette()
+            }
+          } else {
+            this.execCommand(type)
+          }
+        }
+        this._dropdownSelectHandler = (evt) => {
+          let type = evt.detail.type
+          let selected = evt.detail.selected
+
+          this.shadowRoot.querySelector(`#${type}`).selected = selected
+          this.execCommand(type, selected)
+        }
+        this._dropdownCloseHandler = (evt) => {
+          let type = evt.detail.type
+          let menuBtn = this.shadowRoot.querySelector(`#${type}`)
+          menuBtn.relatedDropdownListClose()
+        }
+
+        this._paletteSelectHandler = ({ detail }) => {
+          let type = detail.type
+          let selected = detail.selected
+
+          this.$[type].selected = selected
+          this.execCommand(type, selected)
+        }
+        this._paletteCloseHandler = ({ detail }) => {
+          let type = detail.type
+          this.$[type].relatedPaletteClose()
+        }
+
+        window.addEventListener('toolbar-button-tap', this._toolbarBtnTapHandler.bind(this))
+        window.addEventListener('toolbar-dropdown-select', this._dropdownSelectHandler.bind(this))
+        window.addEventListener('toolbar-dropdown-close', this._dropdownCloseHandler.bind(this))
+
+        window.addEventListener('toolbar-palette-select', this._paletteSelectHandler.bind(this))
+        window.addEventListener('toolbar-palette-close', this._paletteCloseHandler.bind(this))
+
+        // setTimeout to add realtimeTextAttrsChanged event listener,
+        // ensure the sharedPen has been initialized
+        setTimeout(this.handleRealtimeTextAttrsState.bind(this))
+      }
+      disconnectedCallback() {
+        super.disconnectedCallback()
+
+        window.removeEventListener('toolbar-button-tap', this._toolbarBtnTapHandler.bind(this))
+        window.removeEventListener('toolbar-dropdown-select', this._dropdownSelectHandler.bind(this))
+        window.removeEventListener('toolbar-dropdown-close', this._dropdownCloseHandler.bind(this))
+        window.removeEventListener('toolbar-palette-select', this._paletteSelectHandler.bind(this))
+        window.removeEventListener('toolbar-palette-close', this._paletteCloseHandler.bind(this))
+      }
+
+      execCommand(command, value) {
+        console.log('[execCommand]: ', command, value)
+        switch (command) {
+          case 'undo': window.sharedPen.undo(); break
+          case 'redo': window.sharedPen.redo(); break
+
+          case 'font': window.sharedPen.font(value); break
+          case 'font-size': window.sharedPen.fontSize(value+'px'); break
+
+          case 'bold': window.sharedPen.bold(); break
+          case 'italic': window.sharedPen.italic(); break
+          case 'underline': window.sharedPen.underline(); break
+          case 'strike': window.sharedPen.strike(); break
+
+          case 'color': window.sharedPen.color(value); break
+          case 'highlight': window.sharedPen.highlight(value); break
+
+          case 'align-left':
+          case 'align-center':
+          case 'align-right':
+          case 'align-justify': window.sharedPen.align(command.substr(command.indexOf('-')+1)); break
+
+          case 'ordered-list': window.sharedPen.orderedList(); break
+          case 'unordered-list': window.sharedPen.unorderedList(); break
+          case 'todo-list': window.sharedPen.todoList(); break
+
+          case 'indent': window.sharedPen.indent(); break
+          case 'unindent': window.sharedPen.unindent(); break
+
+          case 'link': alert('TODO: Insert Link'); break
+          case 'image': alert('TODO: Insert Image'); break
+        }
+      }
+      // 实时显示当前文本属性状态
+      handleRealtimeTextAttrsState () {
+        window.sharedPen.on('ready', () => {
+          window.sharedPen.on('realtimeTextAttrsChanged', (attrs) => {
+            this.set('currentStates', attrs)
+          })
+
+          window.sharedPen.on('undoStatesChanged', (states) => {
+            this.set('canUndoRedoState', states)
+          })
+        })
+      }
+      // 文本属性按键监听是否选中
+      _monitorAttrsSelected (type, currentStates) {
+        if (!currentStates) { return false }
+        switch (type) {
+          case 'bold': return this._checkedSelectedStates(currentStates, 'b')
+          case 'italic': return this._checkedSelectedStates(currentStates, 'i')
+          case 'underline': return this._checkedSelectedStates(currentStates, 'u')
+          case 'strike': return this._checkedSelectedStates(currentStates, 's')
+
+          case 'align-left':
+          case 'align-center':
+          case 'align-right':
+          case 'align-justify':
+            var laValue = type.substr(type.indexOf('-')+1)
+            return this._checkedSelectedStates(currentStates, 'la', laValue)
+
+          case 'ordered-list': return this._checkedSelectedStates(currentStates, 'lt', 'o')
+          case 'unordered-list': return this._checkedSelectedStates(currentStates, 'lt', 'u')
+          case 'todo-list': return this._checkedSelectedStates(currentStates, 'lt')
+        }
+      }
+      _getCurrentAttrsValue (type, currentStates) {
+        function getValue (type, currentStates) {
+          if (currentStates && (type in currentStates)) {
+            if (type === 'fs') {
+              return parseInt(currentStates[type])
+            }
+            return currentStates[type]
+          } else if (type === 'c') {
+            return 'rgb(0, 0, 0)'
+          } else if (type === 'bc') {
+            return 'rgb(255, 255, 255)'
+          } else if (type === 'f') {
+            return 'Arial'
+          } else if (type === 'fs') {
+            return '16'
+          }
+        }
+
+        switch (type) {
+          case 'font': return getValue('f', currentStates)
+          case 'font-size': return getValue('fs', currentStates)
+          case 'color': return getValue('c', currentStates)
+          case 'highlight': return getValue('bc', currentStates)
+        }
+      }
+      _checkedSelectedStates (currentStates, type, value) {
+        if (type in currentStates) {
+          if (type === 'lt' && !value) {
+            return currentStates[type] === 't' || currentStates[type] === 'tc'
+          } else {
+            return currentStates[type] === true || currentStates[type] === value
+          }
+        } else if (type === 'la') {
+          return value === 'left' // align default: left
+        } else {
+          return false
+        }
+      }
+      _monitorUndoRedoDisabled (type, canUndoRedoState) {
+        if (!canUndoRedoState) { return true }
+        switch (type) {
+          case 'undo': return !canUndoRedoState.canUndo
+          case 'redo': return !canUndoRedoState.canRedo
+        }
+      }
+    }
+    window.customElements.define(ToolboxToolbar.is, ToolboxToolbar)
+  </script>
+</dom-module>

@@ -1,0 +1,89 @@
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="toolbar-shared-style.html">
+
+<dom-module id="toolbar-menu-button">
+  <template>
+    <style include="toolbar-shared-style">
+      :host {
+        display: flex;
+      }
+      .caption {
+        display: inline-block;
+        float: left;
+        font-family: Arial;
+        color: rgba(0,0,0,.7);
+        font-size: 11px;
+        font-weight: bold;
+        line-height: 28px;
+        text-align: left;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin-left: 10px;
+        width: var(--caption-with, 70px);
+      }
+      .dropdown {
+        margin-left: 4px;
+        margin-right: 8px;
+      }
+    </style>
+    <button id="button" on-tap="_onTap">
+      <div class="caption">[[selected]]</div>
+      <div class="dropdown"></div>
+    </button>
+  </template>
+  <script>
+    class ToolbarMenuButton extends Polymer.GestureEventListeners(Polymer.Element) {
+      static get is () {
+        return 'toolbar-menu-button'
+      }
+      static get properties () {
+        return {
+          type: String,
+          tooltip: String,
+          selected: String,
+          items: Array
+        }
+      }
+      connectedCallback () {
+        super.connectedCallback()
+      }
+
+      relatedDropdownListClose () {
+        this.$.button.removeAttribute('selected')
+      }
+      _onTap (evt) {
+        let btn = this.$.button
+        if (btn.hasAttribute('selected')) { // close dropdown list
+          btn.removeAttribute('selected')
+          this.dispatchEvent(new CustomEvent('toolbar-button-tap', {
+            detail: {
+              type: this.type,
+              isOpen: false
+            },
+            bubbles: true,
+            composed: true
+          }))
+        } else { // open dropdown list
+          btn.setAttribute('selected', '')
+          let rect = this.getBoundingClientRect()
+          this.dispatchEvent(new CustomEvent('toolbar-button-tap', {
+            detail: {
+              type: this.type,
+              isOpen: true,
+              position: {
+                left: rect.left,
+                top: rect.top + rect.height + 2 // margin: 2
+              },
+              selected: this.selected,
+              items: this.items
+            },
+            bubbles: true,
+            composed: true
+          }))
+        }
+      }
+    }
+    window.customElements.define(ToolbarMenuButton.is, ToolbarMenuButton)
+  </script>
+</dom-module>

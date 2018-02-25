@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>polymer-sharedpen</title>
+    <meta name="description" content="sharedpen polymer demo">
+
+    <!-- See https://goo.gl/OOhYW5 -->
+    <link rel="manifest" href="/manifest.json">
+
+    <script src="/bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+
+    <link rel="import" href="/src/sharedpen-app.html">
+
+    <!-- SharedPen scripts -->
+    <!-- build:sharedpen_script -->
+    <script src="http://localhost:3000/Utils.js"></script>
+    <script src="http://localhost:3000/Constants.js"></script>
+    <script src="http://localhost:3000/TextAction.js"></script>
+    <script src="http://localhost:3000/TextOperation.js"></script>
+    <script src="http://localhost:3000/Selection.js"></script>
+    <script src="http://localhost:3000/WrappedOperation.js"></script>
+    <script src="http://localhost:3000/UndoManager.js"></script>
+    <script src="http://localhost:3000/EntityManager.js"></script>
+    <script src="http://localhost:3000/AnnotationList.js"></script>
+    <script src="http://localhost:3000/RichTextCodeMirror.js"></script>
+    <script src="http://localhost:3000/RichTextCodeMirrorAdapter.js"></script>
+    <script src="http://localhost:3000/ClientSocketIOAdapter.js"></script>
+    <script src="http://localhost:3000/Client.js"></script>
+    <script src="http://localhost:3000/EditorClient.js"></script>
+    <script src="http://localhost:3000/SharedPen.js"></script>
+    <!-- endbuild -->
+
+    <!-- CodeMirror/socket.io -->
+    <script src="node_modules/codemirror/lib/codemirror.js"></script>
+    <script src="node_modules/socket.io-client/dist/socket.io.js"></script>
+
+    <style>
+      html, body {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <sharedpen-app></sharedpen-app>
+  </body>
+</html>

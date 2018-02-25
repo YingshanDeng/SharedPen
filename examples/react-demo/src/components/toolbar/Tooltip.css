@@ -1,0 +1,30 @@
+.tooltip:hover:before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: calc(100% - 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-bottom-color: #000;
+  z-index: 11;
+}
+.tooltip:hover:after {
+  content: attr(data-tooltip);
+  display: block;
+  position: absolute;
+  top: calc(100% + 3px);
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: black;
+  border: 1px solid white;
+  z-index: 10;
+  color: white;
+  font-size: 12px;
+  font-family: Arial;
+  font-weight: bold;
+  padding: 6px 8px;
+  white-space: nowrap
+}

@@ -1,0 +1,46 @@
+.app {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.explore {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-left: 17px;
+  margin-right: 17px;
+  margin-bottom: 17px;
+
+  background: #f9f9f9;
+  border-radius: 2px;
+  box-shadow: 0 0 2px #888888;
+
+  width: auto;
+  height: 36px;
+  overflow: hidden;
+  padding: 6px;
+}
+
+.exploreIcon {
+  width: 24px;
+  height: 24px;
+  background-size: 14px 16px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url(./images/explore.svg);
+  opacity: 0.6;
+}
+.exploreInfo {
+  width: 0px;
+  padding: 0;
+  line-height: 24px;
+  font-size: 12px;
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.4,0.0,0.2,1)
+}
+.explore:hover .exploreInfo {
+  width: 42px;
+  opacity: 0.6;
+  padding: 0 6px;
+}

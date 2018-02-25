@@ -1,0 +1,23 @@
+.normalButton {
+  position: relative;
+  display: block;
+  margin: 0 3px;
+}
+.normalButton[disabled] {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.normalButton button {
+  width: 28px;
+}
+
+.icon {
+  padding: 1px;
+  opacity: 0.6;
+  transition: opacity 200ms linear;
+}
+button:hover .icon,
+button[data-selected="true"] .icon {
+  opacity: 1;
+}

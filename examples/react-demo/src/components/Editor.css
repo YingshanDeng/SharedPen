@@ -1,0 +1,32 @@
+.editor {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 100%;
+  height: calc(100% - 97px);
+  background: #eee;
+  overflow: scroll;
+}
+.codemirrorContainer {
+  position: relative;
+}
+
+:global(.sharedpen-wrapper) {
+  box-shadow: 0 0 0 0.75pt #d1d1d1, 0 0 3pt 0.75pt #ccc;
+  background: #fff;
+  margin: 6pt;
+  padding: 96px;
+  padding-bottom: 66px;
+}
+:global(.CodeMirror) {
+  width: 613px;
+  height: auto;
+  min-height: 1027px;
+}
+:global(.CodeMirror-scroll) {
+  height: auto;
+  margin-bottom: 0;
+}

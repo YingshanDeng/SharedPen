@@ -1,0 +1,146 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<dom-module id="toolbox-header">
+  <template>
+    <style>
+      :host {
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 60px;
+      }
+      .icon {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        width: 110px;
+        height: 60px;
+        background-color: #4285f4;
+
+        font-family: Impact;
+        font-size: 18px;
+        color: white;
+        text-align: center;
+        line-height: 60px;
+        letter-spacing: 0.5px;
+        z-index: 11;
+      }
+      .wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: auto;
+        height: 100%;
+      }
+      .user-list {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        width: auto;
+        height: 100%;
+      }
+      .avatar-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 20px;
+        margin: 0 5px;
+        border: 1px solid #f0f0f0;
+      }
+      .user-list.excess .avatar-wrapper {
+        margin-right: -20px;
+      }
+      .user-list.excess .avatar-wrapper:last-of-type {
+        margin-right: 0px;
+      }
+      .avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 18px;
+        background-color: #e0e0e0;
+        color: white;
+        line-height: 36px;
+        text-align: center;
+      }
+
+      .invitation {
+        width: 20px;
+        height: 20px;
+        background-size: 10px 10px;
+        background-image: url(../images/add.svg);
+        background-repeat: no-repeat;
+        background-position: center;
+        opacity: 0.6;
+        margin: 0 10px;
+      }
+      button {
+        outline: none;
+        border: none;
+        border-radius: 2px;
+        overflow: hidden;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #f0f0f0;
+      }
+      button:active {
+        background-color: #e0e0e0;
+      }
+    </style>
+    <div class="icon">SharedPen</div>
+    <div class="wrapper">
+      <div class="user-list">
+        <template is="dom-repeat" items="[[clients]]" as="client">
+          <div class="avatar-wrapper" style$="background-color: [[client.color]]">
+            <div class="avatar">[[_parseUserName(client.name)]]</div>
+          </div>
+        </template>
+      </div>
+      <button class="invitation" on-tap="_onTapInvitation"></button>
+    </div>
+
+  </template>
+  <script>
+    class ToolboxHeader extends Polymer.GestureEventListeners(Polymer.Element) {
+      static get is () {
+        return 'toolbox-header'
+      }
+      static get properties () {
+        return {
+          clients: {
+            type: Array,
+            value: []
+          }
+        }
+      }
+      _parseUserName(name) {
+        return name[0].toUpperCase()
+      }
+      connectedCallback () {
+        super.connectedCallback()
+        this._userList = this.shadowRoot.querySelector('.user-list')
+        setTimeout(() => {
+          window.sharedPen.on('ready', () => {
+            window.sharedPen.on('clientsChanged', (clients) => {
+              if (clients.length > (window.innerWidth - 200) / 50) {
+                this._userList.classList.add('excess')
+              } else {
+                this._userList.classList.remove('excess')
+              }
+              this.set('clients', clients)
+            })
+          })
+        })
+      }
+      _onTapInvitation (evt) {
+        // TODO ...
+      }
+    }
+    window.customElements.define(ToolboxHeader.is, ToolboxHeader)
+  </script>
+</dom-module>

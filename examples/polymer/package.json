@@ -1,0 +1,21 @@
+{
+  "name": "polymer-sharedpen",
+  "version": "0.1.0",
+  "description": "sharedpen polymer demo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "bundle": "gulp html:prepare && polymer build && gulp html:windUp && gulp gzip"
+  },
+  "author": "Yinshandeng <Yinshandeng@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "codemirror": "^5.33.0",
+    "socket.io": "^2.0.4"
+  },
+  "devDependencies": {
+    "gulp-gzip": "^1.4.1",
+    "gulp-html-replace": "^1.6.2",
+    "gulp-replace": "^0.6.1"
+  }
+}

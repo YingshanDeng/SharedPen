@@ -1,0 +1,7 @@
+{
+  "name": "polymer-sharedpen",
+  "short_name": "polymer-sharedpen",
+  "description": "sharedpen polymer demo",
+  "start_url": "/",
+  "display": "standalone"
+}
