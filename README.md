@@ -1,5 +1,7 @@
 # SharedPen
-A real time collaborative editor using CodeMirror and ot.js
+A real time collaborative editor using CodeMirror and ot.js.
+![](http://7vikhl.com1.z0.glb.clouddn.com/sharedpen.png)
+SharedPen is still in Development, fork and pull-requests are welcome! 😋
 
 ## Development
 ```
@@ -52,8 +54,6 @@ npm run bundle
 
 ### bundle SharedPen React Demo
 ```
-TODO ...
-
 cd examples/react-demo
 yarn build
 ```
