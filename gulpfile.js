@@ -6,30 +6,12 @@ var buffer = require('vinyl-buffer')
 var uglify = require('gulp-uglify')
 var rename = require('gulp-rename')
 var es = require('event-stream')
-var runSequence = require('run-sequence')
 var cleanCSS = require('gulp-clean-css')
 var cached = require('gulp-cached')
 var babel = require('gulp-babel')
 var del = require('del')
 var browserSync = require('browser-sync')
 var gzip = require('gulp-gzip')
-
-/** ******************* serve task *********************/
-// serve sharedpen source files and compile them
-gulp.task('serve', ['clean:build'], () => {
-  runSequence(['build:scripts', 'build:css'])
-  browserSync({
-    port: 5000,
-    logPrefix: 'SharedPen',
-    server: {
-      baseDir: './build'
-    },
-    notify: false,
-    open: false
-  })
-  gulp.watch(['lib/*.js'], ['build:scripts'])
-  gulp.watch(['lib/*.css'], ['build:css'])
-})
 
 // compile js/css
 gulp.task('build:scripts', () => {
@@ -46,16 +28,40 @@ gulp.task('build:css', () => {
     .pipe(gulp.dest('build/'))
 })
 // clean build dir
-gulp.task('clean:build', () => {
+gulp.task('clean:build', (cb) => {
   del.sync('build')
-})
-/** ******************* build task *********************/
-gulp.task('build', (cb) => {
-  runSequence('clean:build', ['build:scripts', 'build:css'], cb)
+  cb()
 })
 
+/** ******************* serve task *********************/
+// serve sharedpen source files and compile them
+gulp.task('watch', () => {
+  browserSync({
+    port: 5000,
+    logPrefix: 'SharedPen',
+    server: {
+      baseDir: './build'
+    },
+    notify: false,
+    open: false
+  })
+  gulp.watch('lib/*.js', gulp.task('build:scripts'))
+  gulp.watch('lib/*.css', gulp.task('build:css'))
+})
+
+gulp.task('serve',
+   gulp.series(
+    'clean:build',
+    gulp.parallel('build:scripts', 'build:css'),
+    'watch'
+  )
+)
+
+/** ******************* build task *********************/
+gulp.task('build', gulp.series('clean:build', gulp.parallel('build:scripts', 'build:css')))
+
 // bundle js/css
-gulp.task('bundle:scripts', () => {
+gulp.task('bundle:scripts', (cb) => {
   var bundles = [
     { standalone: 'SharedPen', entry: 'lib/SharedPen.js' },
     { standalone: 'SharedPenServer', entry: 'lib/SharedPenServer.js' }
@@ -76,7 +82,8 @@ gulp.task('bundle:scripts', () => {
       }))
       .pipe(gulp.dest('dist/'))
   })
-  return es.merge.apply(null, tasks)
+  es.merge.apply(null, tasks)
+  cb()
 })
 
 gulp.task('bundle:css', () => {
@@ -89,8 +96,9 @@ gulp.task('bundle:css', () => {
 })
 
 // clean dist dir
-gulp.task('clean:dist', () => {
+gulp.task('clean:dist', (cb) => {
   del.sync('dist')
+  cb();
 })
 
 gulp.task('gzip', () => {
@@ -100,8 +108,11 @@ gulp.task('gzip', () => {
 })
 
 /** ******************* bundle task *********************/
-gulp.task('bundle', ['clean:dist'], (cb) => {
-  runSequence(['bundle:scripts', 'bundle:css'], 'gzip', cb)
-})
+gulp.task('bundle',
+  gulp.series(
+    'clean:dist',
+    gulp.parallel('bundle:scripts', 'bundle:css'),
+    'gzip',
+));
 
-gulp.task('default', ['bundle'])
+gulp.task('default', gulp.task('bundle'));
