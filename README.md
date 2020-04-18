@@ -1,6 +1,6 @@
 # SharedPen
 A real time collaborative editor using CodeMirror and ot.js.
-![](http://7vikhl.com1.z0.glb.clouddn.com/sharedpen.png)
+![](https://raw.githubusercontent.com/YingshanDeng/image-host/master/data/sharedpen.png)
 SharedPen is still in Development, fork and pull-requests are welcome! 😋
 
 ## Development
