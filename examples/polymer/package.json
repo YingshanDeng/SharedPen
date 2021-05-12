@@ -10,7 +10,7 @@
   "author": "Yinshandeng <Yinshandeng@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "codemirror": "^5.33.0",
+    "codemirror": "^5.58.2",
     "socket.io": "^2.0.4"
   },
   "devDependencies": {
