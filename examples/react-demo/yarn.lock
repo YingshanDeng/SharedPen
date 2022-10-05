@@ -1293,7 +1293,7 @@ caniuse-lite@^1.0.30000748, caniuse-lite@^1.0.30000784:
 
 capture-stack-trace@^1.0.0:
   version "1.0.0"
-  resolved "http://registry.npmjs.org/capture-stack-trace/-/capture-stack-trace-1.0.0.tgz#4a6fa07399c26bba47f0b2496b4d0fb408c5550d"
+  resolved "https://registry.npmjs.org/capture-stack-trace/-/capture-stack-trace-1.0.0.tgz#4a6fa07399c26bba47f0b2496b4d0fb408c5550d"
 
 case-sensitive-paths-webpack-plugin@2.1.1:
   version "2.1.1"
@@ -1611,7 +1611,7 @@ create-ecdh@^4.0.0:
 
 create-error-class@^3.0.1:
   version "3.0.2"
-  resolved "http://registry.npmjs.org/create-error-class/-/create-error-class-3.0.2.tgz#06be7abef947a3f14a30fd610671d401bca8b7b6"
+  resolved "https://registry.npmjs.org/create-error-class/-/create-error-class-3.0.2.tgz#06be7abef947a3f14a30fd610671d401bca8b7b6"
   dependencies:
     capture-stack-trace "^1.0.0"
 
@@ -3099,6 +3099,10 @@ html-minifier@^3.2.3:
     param-case "2.1.x"
     relateurl "0.2.x"
     uglify-js "3.3.x"
+
+html-replace-webpack-plugin@^2.2.8:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/html-replace-webpack-plugin/-/html-replace-webpack-plugin-2.6.0.tgz#506d81e06cb5d6519281ce7c7dde7aeee04620e7"
 
 html-webpack-plugin@2.29.0:
   version "2.29.0"
@@ -5278,7 +5282,7 @@ react@^16.2.0:
 
 read-all-stream@^3.0.0:
   version "3.1.0"
-  resolved "http://registry.npmjs.org/read-all-stream/-/read-all-stream-3.1.0.tgz#35c3e177f2078ef789ee4bfafa4373074eaef4fa"
+  resolved "https://registry.npmjs.org/read-all-stream/-/read-all-stream-3.1.0.tgz#35c3e177f2078ef789ee4bfafa4373074eaef4fa"
   dependencies:
     pinkie-promise "^2.0.0"
     readable-stream "^2.0.0"
