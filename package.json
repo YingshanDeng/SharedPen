@@ -40,7 +40,7 @@
     "cors": "^2.8.4",
     "del": "^3.0.0",
     "event-stream": "^3.3.4",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
     "gulp-babel": "^7.0.0",
     "gulp-cached": "^1.1.1",
     "gulp-clean-css": "^3.9.0",
