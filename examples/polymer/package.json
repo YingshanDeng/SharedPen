@@ -11,7 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "codemirror": "^5.33.0",
-    "socket.io": "^2.0.4"
+    "socket.io": "^2.5.0"
   },
   "devDependencies": {
     "gulp-gzip": "^1.4.1",
